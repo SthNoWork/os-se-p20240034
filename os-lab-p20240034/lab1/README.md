@@ -1,51 +1,271 @@
-https://github.com/RathpiseyAlpha/ITC-OS-2026/blob/main/labs/lab1/lab1-instruction.md
+# Lab 1 — Linux Operating System Fundamentals
 
-Expected:
+**Student ID:** p20240034
+**Course:** Operating Systems
+**Lab Reference:** [lab1-instruction.md](https://github.com/RathpiseyAlpha/ITC-OS-2026/blob/main/labs/lab1/lab1-instruction.md)
 
-os-se-<YourStudentID>/
-└── os-lab-<YourStudentID>/
-    └── lab1/
-        ├── README.md
-        ├── images/
-        │   ├── task1.png
-        │   ├── task2.png
-        │   ├── task3.png
-        │   ├── task4.png
-        │   ├── task5.png
-        │   └── task6.png
-        ├── task1_os_info.txt
-        ├── task2_file_commands.txt
-        ├── task2_files/
-        │   ├── a.txt
-        │   └── b_renamed.txt
-        ├── task3_apt_install.txt
-        ├── task3_apt_purge.txt
-        ├── task3_apt_remove.txt
-        ├── task3_apt_update.txt
-        ├── task3_config_after_purge.txt
-        ├── task3_config_after_remove.txt
-        ├── task3_verify_install.txt
-        ├── task4_process_list.txt
-        ├── task5_app_verify.txt
-        ├── task5_multitasking.txt
-        └── task6_virtualization_check.txt
+---
 
-Result:
-hengrith@hengrith-VMware-Virtual-Platform:~/Desktop/os-se-p20240034/os-lab-p20240034/lab1$ tree
-.
-├── images
-│   ├── task1.png
-│   ├── task2.png
-│   ├── task3.png
-│   ├── task4.png
-│   ├── task5.png
-│   └── task6.png
+## Tasks
+
+- [Task 1](#task-1--os-information)
+-  [Task 2](#task-2--file-system-commands)
+-  [Task 3](#task-3--package-management-with-apt)
+-  [Task 4](#task-4--programs-vs-processes)
+-  [Task 5](#task-5--installing-applications--multitasking)
+-  [Task 6](#task-6--virtualization-detection)
+
+---
+
+## Commands covered
+
+## `uname -a`
+shows your kernel name, version, and system architecture
+- example: `uname -a > task1_os_info.txt`
+
+---
+
+## `lsb_release -a`
+shows your linux distro name, version, codename
+- example: `lsb_release -a >> task1_os_info.txt`
+
+---
+
+## `pwd`
+prints the folder you're currently in
+- example: `pwd`
+
+---
+
+## `ls`
+lists files in the current directory
+- example: `ls`
+
+---
+
+## `mkdir`
+creates a new folder
+- example: `mkdir task2_files`
+
+---
+
+## `cd`
+moves you into a directory
+- example: `cd task2_files`
+
+---
+
+## `touch`
+creates a new empty file
+- example: `touch a.txt b.txt`
+
+---
+
+## `echo`
+prints text, usually piped into a file
+- example: `echo "hello world" > a.txt`
+
+---
+
+## `cat`
+prints the contents of a file
+- example: `cat a.txt`
+
+---
+
+## `cp`
+copies a file
+- example: `cp a.txt backup.txt`
+
+---
+
+## `mv`
+moves or renames a file
+- example: `mv b.txt b_renamed.txt`
+
+---
+
+## `rm`
+deletes a file
+- example: `rm backup.txt`
+
+---
+
+## `apt-get update`
+syncs your local package list from the internet
+- example: `sudo apt-get update`
+
+---
+
+## `apt-get install`
+downloads and installs a package
+- example: `sudo apt-get install htop -y`
+
+---
+
+## `apt-get remove`
+uninstalls a package but keeps its config files
+- example: `sudo apt-get remove htop`
+
+---
+
+## `apt-get purge`
+uninstalls a package and deletes its config files too
+- example: `sudo apt-get purge htop`
+
+---
+
+## `apt list --installed`
+shows all packages currently installed
+- example: `apt list --installed | grep htop`
+
+---
+
+## `sleep N &`
+runs a do-nothing pause process in the background
+- example: `sleep 120 &`
+
+---
+
+## `ps`
+lists all running processes
+- example: `ps > task4_process_list.txt`
+
+---
+
+## `which`
+shows where an installed program lives on the system
+- example: `which htop tmux`
+
+---
+
+## `python3 -m http.server`
+spins up a simple web server on a port
+- example: `python3 -m http.server 8080 &`
+
+---
+
+## `kill %N`
+stops a background job by its job number
+- example: `kill %3`
+
+---
+
+## `systemd-detect-virt`
+tells you if you're in a VM and what kind (kvm, vmware, none…)
+- example: `systemd-detect-virt > task6_virtualization_check.txt`
+
+---
+
+## `lscpu | grep -i hypervisor`
+checks cpu info for hypervisor details
+- example: `lscpu | grep -i hypervisor >> task6_virtualization_check.txt`
+
+---
+
+## `hostname`
+prints the machine's name
+- example: `hostname >> task6_virtualization_check.txt`
+
+---
+
+## Task 1 — OS Information
+
+```bash
+uname -a > task1_os_info.txt
+lsb_release -a >> task1_os_info.txt
+```
+
+![task1](images/task1.png)
+
+---
+
+## Task 2 — File System Commands
+
+```bash
+touch a.txt b.txt
+echo "hello world" > a.txt
+cat a.txt
+cp a.txt backup.txt
+mv b.txt b_renamed.txt
+rm backup.txt
+```
+
+![task2](images/task2.png)
+
+---
+
+## Task 3 — Package Management with APT
+
+```bash
+sudo apt-get update
+sudo apt-get install <package> -y
+apt list --installed | grep <package>
+sudo apt-get remove <package>
+sudo apt-get purge <package>
+```
+
+![task3](images/task3.png)
+
+---
+
+## Task 4 — Programs vs Processes
+
+```bash
+sleep 120 &
+ps > task4_process_list.txt
+```
+
+![task4](images/task4.png)
+
+---
+
+## Task 5 — Installing Apps & Multitasking
+
+```bash
+sudo apt-get install htop tmux -y
+which htop tmux > task5_app_verify.txt
+sleep 500 &
+sleep 600 &
+python3 -m http.server 8080 &
+ps > task5_multitasking.txt
+kill %3
+```
+
+![task5](images/task5.png)
+
+---
+
+## Task 6 — Virtualization Detection
+
+```bash
+systemd-detect-virt > task6_virtualization_check.txt
+lscpu | grep -i hypervisor >> task6_virtualization_check.txt
+uname -r >> task6_virtualization_check.txt
+hostname >> task6_virtualization_check.txt
+```
+
+![task6](images/task6.png)
+
+---
+
+## Repository Structure
+
+```
+lab1/
 ├── README.md
+├── images/
+│   ├── task1.png
+│   ├── task2.png
+│   ├── task3.png
+│   ├── task4.png
+│   ├── task5.png
+│   └── task6.png
 ├── task1_os_info.txt
 ├── task2_file_commands.txt
-├── task2_files
-│   ├── a.txt
-│   └── b_renamed.txt
+├── task2_files/
+│   ├── a.txt
+│   └── b_renamed.txt
 ├── task3_apt_install.txt
 ├── task3_apt_purge.txt
 ├── task3_apt_remove.txt
@@ -56,116 +276,4 @@ hengrith@hengrith-VMware-Virtual-Platform:~/Desktop/os-se-p20240034/os-lab-p2024
 ├── task4_process_list.txt
 ├── task5_app_verify.txt
 └── task6_virtualization_check.txt
-
-Note:
-task 1:
-    uname — displays kernel and system information
-    lsb_release — displays Ubuntu distribution details
-
-doing a command then using ">" instead of the terminal being cluttered it will output it all to the specified .txt
-example: uname -a > task1_os_info.txt
-
-task 2:
-
-pwd — Print Working Directory (shows your current location).
-ls — List directory contents (shows files and folders).
-mkdir / cd — Make a new directory / Change into a directory.
-touch — Creates a new, empty file.
-echo — Prints text (often redirected to insert text into a file).
-cat — Concatenates and displays the contents of a file.
-cp / mv / rm — Copy, Move/Rename, and Remove (delete) files
-
-example: 
-touch filename.extension filename.extension
-echo "hello" > filename.extension 
-(this overwrites(>) everything in the file with whatver in the "")
-cat opens and copies the content output it to terminal 
-
-cp input.txt output.txt
-mv name.txt renamed.txt
-rm filename.extenion
-
-task 3:
-Commands Used:
-
-    apt-get update — refreshes the local package index from remote repositories
-    apt-get install — downloads and installs a package
-    apt-get remove — uninstalls a package but keeps its configuration files
-    apt-get purge — uninstalls a package and removes its configuration files
-    apt-get upgrade — upgrades all currently installed packages to their latest available versions
-    apt list --installed — lists all packages currently installed on the system
-    ls — used here to check for the existence of configuration directories
-
-
-Task 4 — Programs vs Processes (Single Process)
-
-Purpose: Demonstrate that a program becomes a running process when it is executed.
-
-Commands Used:
-
-    sleep — runs a program that simply pauses for a specified duration
-    & — added to the end of a command to run a program in the background
-    ps — lists currently running processes
-
-Instructions:
-
-    Run a background process:
-
-    sleep 120 &
-
-    Capture the list of running processes:
-
-    ps > task4_process_list.txt
-
-Output File: task4_process_list.txt
-Task 5 — Installing Real Applications & Observing Multitasking
-
-Purpose: Install commonly used, server-friendly CLI applications and observe multiple programs running simultaneously under the OS.
-
-Commands Used:
-
-    apt-get install
-    python3 (built-in tool to run a background web server)
-
-Instructions:
-
-    Install htop (an interactive process viewer) and tmux (a terminal multiplexer):
-
-    sudo apt-get install htop tmux -y
-
-    Verify their installations:
-
-    which htop tmux > task5_app_verify.txt
-
-    Start multiple background applications to simulate a multitasking environment:
-
-    sleep 500 &
-    sleep 600 &
-    python3 -m http.server 8080 &
-
-    Capture the process list showing your simultaneous background applications:
-
-    ps > task5_multitasking.txt
-
-    Optional cleanup: You can stop the web server by typing kill %3 if it was the third background job.
-
-Output Files: task5_app_verify.txt, task5_multitasking.txt
-Task 6 — Virtualization and Hypervisor Detection
-
-Purpose: Check whether the operating system is running on physical hardware or a virtual machine.
-
-Commands Used:
-
-    systemd-detect-virt
-    lscpu
-    uname, hostname
-
-Instructions:
-
-systemd-detect-virt > task6_virtualization_check.txt
-lscpu | grep -i hypervisor >> task6_virtualization_check.txt
-uname -r >> task6_virtualization_check.txt
-hostname >> task6_virtualization_check.txt
-
-Output File: task6_virtualization_check.txt
-
+```
