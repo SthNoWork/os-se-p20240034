@@ -1,0 +1,46 @@
+--- Number of entries in /etc ---
+235
+--- Sorted unique names ---
+apple
+banana
+cherry
+zebra
+--- Count of each name ---
+      3 apple
+      2 banana
+      1 zebra
+      1 cherry
+--- First 5 users in /etc/passwd ---
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+--- Last 3 users in /etc/passwd ---
+gdm:x:120:121:Gnome Display Manager:/var/lib/gdm3:/bin/false
+nm-openvpn:x:121:122:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+hengrith:x:1000:1000:hengrith:/home/hengrith:/bin/bash
+--- Top 5 largest directories under /usr ---
+2.7G	/usr/lib
+1.6G	/usr/share
+333M	/usr/src
+262M	/usr/bin
+115M	/usr/libexec
+--- Pipeline with tee ---
+20
+(also saved to etc_snapshot.txt)
+--- Pipeline with tee ---
+20
+(also saved to etc_snapshot.txt)
+--- Uppercase to lowercase ---
+hello world from techcorp
+--- Remove duplicate spaces ---
+too many spaces here
+--- Challenge Pipelines ---
+139
+usbmux
+uucp
+uuidd
+whoopsie
+www-data
+325

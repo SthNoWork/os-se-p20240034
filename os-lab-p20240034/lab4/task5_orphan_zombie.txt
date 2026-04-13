@@ -1,0 +1,11 @@
+=== Task 5: Orphan & Zombie Processes ===
+--- Orphan process observation ---
+Child PID: <FILL_IN>, Original PPID: <FILL_IN>, New PPID after parent exit: <FILL_IN>
+--- Orphan process observation ---
+Child PID: 11963, Original PPID: <the parent PID printed when you ran ./orphan>, New PPID after parent exit: 1297
+--- Zombie process observation ---
+Zombie PID: <FILL_IN>, State: Z (zombie/defunct), Parent PID: <FILL_IN>
+--- Zombie and Orphan Cleanup Notes ---
+Q: How are orphans cleaned up? A: Orphans are adopted by init/systemd (PID 1), which eventually calls wait() to clean them up when they finish.
+Q: How are zombies cleaned up? A: Zombies are cleaned up when the parent calls wait() to read the child's exit status, removing the entry from the process table.
+Q: Can you kill a zombie with 'kill -9'? Why or why not? A: No, because a zombie is already dead. It has no running code to receive signals. It can only be removed when the parent calls wait().

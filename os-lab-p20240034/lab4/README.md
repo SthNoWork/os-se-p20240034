@@ -1,7 +1,7 @@
 # OS Lab 4 Submission — I/O Redirection, Pipelines & Process Management
 
-- **Student Name:** [Your Name Here]
-- **Student ID:** [Your Student ID Here]
+- **Student Name:** LOR Hengrith
+- **Student ID:** p20240034
 
 ---
 
@@ -92,13 +92,13 @@ After finishing all tasks, run `history | tail -n 100` and take a screenshot.
 ## Answers to Task 5 Questions
 
 1. **How are orphans cleaned up?**
-   > _Your answer here_
+   > Orphan processes are adopted by PID 1, usually `systemd` or `init`, which becomes their new parent and eventually reaps them when they exit.
 
 2. **How are zombies cleaned up?**
-   > _Your answer here_
+   > Zombies are cleaned up when their parent calls `wait()` or `waitpid()` to collect the child's exit status and remove the process entry from the process table.
 
 3. **Can you kill a zombie with `kill -9`? Why or why not?**
-   > _Your answer here_
+   > No. A zombie is already dead; it only remains as a process-table entry until the parent reaps it, so signals like `kill -9` do not remove it.
 
 ---
 
