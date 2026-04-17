@@ -1,0 +1,8 @@
+Starting with mutex — counter should be correct
+Expected final counter: 500000
+Thread 0 done. Counter so far: 311515
+Thread 3 done. Counter so far: 424263
+Thread 1 done. Counter so far: 447773
+Thread 2 done. Counter so far: 493924
+Thread 4 done. Counter so far: 500000
+Final counter (with mutex): 500000

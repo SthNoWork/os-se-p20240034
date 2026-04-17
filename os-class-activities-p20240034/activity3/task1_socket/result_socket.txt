@@ -1,0 +1,12 @@
+Server: socket created (fd=3)
+Server: bound to port 8080
+Server: listening... waiting for client
+Server: client connected (fd=4)
+Server: received message: 'Hello from client!'
+Server: sent response: 'Hello from server!'
+Server: connection closed
+Client: socket created
+Client: connected to server
+Client: sent message: 'Hello from client!'
+Client: received response: 'Hello from server!'
+Client: connection closed

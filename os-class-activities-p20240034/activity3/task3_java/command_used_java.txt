@@ -1,0 +1,3 @@
+javac ThreadDemo.java && java ThreadDemo
+javac RunnableDemo.java && java RunnableDemo
+javac PoolDemo.java && java PoolDemo

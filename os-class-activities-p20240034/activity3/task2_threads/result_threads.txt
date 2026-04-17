@@ -1,0 +1,8 @@
+Starting without mutex — expect race condition
+Expected final counter: 500000
+Thread 1 done. Counter so far: 100329
+Thread 2 done. Counter so far: 101658
+Thread 0 done. Counter so far: 112533
+Thread 3 done. Counter so far: 212533
+Thread 4 done. Counter so far: 312533
+Final counter (no mutex): 312533

@@ -1,0 +1,5 @@
+hengrith   14209   12165   14209  0    5 12:32 pts/0    00:00:00 ./threads_observe
+hengrith   14209   12165   14210  0    5 12:32 pts/0    00:00:00 ./threads_observe
+hengrith   14209   12165   14211  0    5 12:32 pts/0    00:00:00 ./threads_observe
+hengrith   14209   12165   14212  0    5 12:32 pts/0    00:00:00 ./threads_observe
+hengrith   14209   12165   14213  0    5 12:32 pts/0    00:00:00 ./threads_observe

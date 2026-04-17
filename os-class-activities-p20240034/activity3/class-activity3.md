@@ -1,8 +1,8 @@
 # Class Activity 3 — Socket Communication & Multithreading
 
-> **Related Lectures**: Week 3 — Processes, Week 4 — Threads & Multicore  
-> **Topics**: TCP Socket Communication (Client/Server), POSIX Threads (pthreads), Java Threading, Observing Threads in Linux & Windows  
-> **Language**: C, Java  
+> **Related Lectures**: Week 3 — Processes, Week 4 — Threads & Multicore
+> **Topics**: TCP Socket Communication (Client/Server), POSIX Threads (pthreads), Java Threading, Observing Threads in Linux & Windows
+> **Language**: C, Java
 > **Environment**: Linux (native, VM, or WSL) + Windows (for Java threading observation)
 
 ---
@@ -180,7 +180,7 @@ Write a **TCP server** and a **TCP client** in C. The server listens on a port, 
 #### 1. Navigate to your task folder
 
 ```bash
-$ cd activity3/task1_socket
+$ cd /home/hengrith/OS-SE-p20240034/os-class-activities-p20240034/activity3/task1_socket
 ```
 
 #### 2. Create the server
@@ -423,7 +423,7 @@ Write a C program that creates multiple threads using the pthreads library. Each
 #### 1. Navigate to your task folder
 
 ```bash
-$ cd ../task2_threads
+$ cd /home/hengrith/OS-SE-p20240034/os-class-activities-p20240034/activity3/task2_threads
 ```
 
 #### 2. Create the source file
@@ -607,7 +607,7 @@ Write a multithreaded Java program using both `Thread` subclass and `Runnable` i
 #### 1. Navigate to your task folder
 
 ```bash
-$ cd ../task3_java
+$ cd /home/hengrith/OS-SE-p20240034/os-class-activities-p20240034/activity3/task3_java
 ```
 
 #### 2. Create `ThreadDemo.java` — Thread subclass approach
@@ -857,6 +857,7 @@ int main() {
 ```
 
 ```bash
+$ cd /home/hengrith/OS-SE-p20240034/os-class-activities-p20240034/activity3/task2_threads
 $ gcc -o threads_observe threads_observe.c -pthread
 $ ./threads_observe &
 ```
@@ -923,6 +924,7 @@ $ kill %1 2>/dev/null  # Kill the background threads_observe process
 Open a terminal (PowerShell or CMD) on Windows:
 
 ```powershell
+cd C:\path\to\os-class-activities-p20240034\activity3\task3_java
 javac ThreadDemo.java
 java ThreadDemo
 ```
@@ -1021,24 +1023,21 @@ os-se-<YourStudentID>/
 ### Setting Up Your Activity Folder
 
 ```bash
-# Navigate to your existing submission repo
-$ cd os-se-<YourStudentID>
+# You are already working here:
+$ cd /home/hengrith/OS-SE-p20240034/os-class-activities-p20240034/activity3
 
-# Create the activity 3 folder structure
-$ mkdir -p os-class-activities-<YourStudentID>/activity3/{task1_socket,task2_threads,task3_java,screenshots}
-
-# Start working
-$ cd os-class-activities-<YourStudentID>/activity3
+# Create required folders for this activity
+$ mkdir -p task1_socket task2_threads task3_java screenshots
 ```
 
 ### Pushing to Git
 
 ```bash
-# Make sure you are in the root of your repo
-$ cd os-se-<YourStudentID>
+# Go to your repository root (parent of activity3)
+$ cd /home/hengrith/OS-SE-p20240034/os-class-activities-p20240034
 
 # Stage your class activity files
-$ git add os-class-activities-<YourStudentID>/activity3/
+$ git add activity3/
 
 # Commit with a meaningful message
 $ git commit -m "Add class activity 3 — Socket Communication & Multithreading"

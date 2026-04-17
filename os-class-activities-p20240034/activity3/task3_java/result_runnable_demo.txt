@@ -1,0 +1,14 @@
+Main: starting runnables
+Runnable-3 step 1
+Runnable-1 step 1
+Runnable-2 step 1
+Runnable-3 step 2
+Runnable-1 step 2
+Runnable-2 step 2
+Runnable-3 step 3
+Runnable-1 step 3
+Runnable-2 step 3
+Runnable-3 finished
+Runnable-1 finished
+Runnable-2 finished
+Main: all runnables done

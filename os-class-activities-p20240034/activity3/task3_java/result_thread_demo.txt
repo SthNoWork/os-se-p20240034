@@ -1,0 +1,14 @@
+Main: starting threads
+Thread-2 step 1
+Thread-3 step 1
+Thread-1 step 1
+Thread-1 step 2
+Thread-2 step 2
+Thread-3 step 2
+Thread-1 step 3
+Thread-2 step 3
+Thread-3 step 3
+Thread-1 finished
+Thread-2 finished
+Thread-3 finished
+Main: all threads done
