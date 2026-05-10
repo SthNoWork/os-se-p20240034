@@ -1,0 +1,26 @@
+Required Items:
+❌ README.md 0/4
+❌ task1_warmup.txt 0/4
+❌ task2_path.txt 0/4
+❌ task3_doorstep.txt 0/4
+❌ task4_inbox.txt 0/4
+❌ task5_broadcaster.txt 0/4
+❌ task6_guestbook.txt 0/4
+❌ harvest_report.txt 0/4
+❌ task8_mailman.txt 0/4
+❌ sign_book.c 0/4
+❌ scripts/warmup 0/4
+❌ scripts/broadcaster 0/4
+❌ scripts/harvester 0/4
+❌ scripts/mailman 0/4
+❌ scripts/sign_book_binary 0/4
+❌ images/task1_warmup.png 0/4
+❌ images/task2_path.png 0/4
+❌ images/task3_doorstep.png 0/4
+❌ images/task4_inbox.png 0/4
+❌ images/task5_broadcaster.png 0/4
+❌ images/task6_guestbook.png 0/4
+❌ images/task7_harvester.png 0/4
+❌ images/task8_mailman.png 0/4
+❌ images 0/4
+❌ scripts 0/4

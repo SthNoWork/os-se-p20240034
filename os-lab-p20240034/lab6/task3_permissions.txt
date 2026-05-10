@@ -1,0 +1,3 @@
+drwxrwx--- 2 root devteam 4096 May 28 16:00 /opt/techcorp/devproject
+total 0
+-rw-rw-r-- 1 dev_alice devteam 0 May 28 16:00 project_notes.txt

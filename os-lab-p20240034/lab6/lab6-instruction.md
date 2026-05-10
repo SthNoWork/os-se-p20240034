@@ -12,16 +12,8 @@
 
 > ⚠️ **IMPORTANT — READ EVERYTHING FIRST**
 >
-> **Before you type a single command, read through this ENTIRE document from top to bottom.** Scan every section — the tasks, the challenges, the deliverables, the folder structure, and the README template. Understand the full scope of what is expected **before** you start working.
->
-> **Document structure:**
-> 1. **Lab Objectives** — What you'll learn
-> 2. **Task Overview** — Summary of all tasks at a glance
-> 3. **Lab Setup** — Repository and folder preparation
-> 4. **Quick Reference Tables** — Command cheat sheets
-> 5. **Tasks 1–5 (Required)** — User management, groups, permissions, special bits, ACLs
-> 6. **Deliverables & Submission** — Folder structure, README template, git push
-> 7. **Screenshot Checklist** — Every screenshot you need, in one place
+> **Before you type a single command, read through this ENTIRE document from top to bottom.**
+> Understand the full scope of what is expected **before** you start working.
 
 ---
 
@@ -55,19 +47,32 @@ After completing this lab, students will be able to:
 
 ## Lab Setup
 
-Navigate into your existing lab submission repository and create the `lab6` directory:
+Navigate into your existing lab submission repository and create the required directory structure **all at once**:
 
 ```bash
-$ cd ~/os-se-<YourStudentID>/os-lab-<YourStudentID>
-$ mkdir lab6
-$ cd lab6
+cd ~/os-se-<YourStudentID>/os-lab-<YourStudentID>
+
+# Create lab6 and all required subdirectories in one command
+mkdir -p lab6/security_lab lab6/images
+
+cd lab6
 ```
+
+> ✅ This creates:
+> ```
+> lab6/
+> ├── security_lab/
+> └── images/
+> ```
 
 ### Documenting Your Work
 
 1. **Screenshots:** All tasks require screenshots as proof of execution.
-2. **Save All Images:** Save all screenshots to an `images/` folder inside your `lab6` directory.
-3. **Output Files:** Redirect command outputs into `.txt` files as directed in each task.
+2. **Save All Images:** Save all screenshots to the `images/` folder inside your `lab6` directory.  
+   Name them **exactly** as listed in the Screenshot Checklist below.
+3. **Output Files:** The commands in each task will redirect output into `.txt` files automatically.
+
+> ⚠️ **All commands in Tasks 1–5 must be run from inside the `lab6/` directory**, unless a task explicitly says to `cd` elsewhere.
 
 ---
 
@@ -122,58 +127,41 @@ $ cd lab6
 
 **Scenario:** *"We have two new engineers joining the project: `dev_alice` and `dev_bob`. Create their accounts, set passwords, and verify the accounts are properly configured."*
 
+> ⚠️ **Make sure you are in `lab6/` before running these commands.**
+
 **Instructions:**
 
-1. Set up your working directory:
+1. Create two new user accounts:
    ```bash
-   $ mkdir -p security_lab
-   $ cd security_lab
+   sudo useradd -m -s /bin/bash dev_alice
+   sudo useradd -m -s /bin/bash dev_bob
    ```
 
-2. Create two new user accounts:
+2. Set passwords for both users:
    ```bash
-   $ sudo useradd -m -s /bin/bash dev_alice
-   $ sudo useradd -m -s /bin/bash dev_bob
-   ```
-
-3. Set passwords for both users:
-   ```bash
-   $ sudo passwd dev_alice
-   $ sudo passwd dev_bob
+   sudo passwd dev_alice
+   sudo passwd dev_bob
    ```
    > Use a simple password like `Password123` for this lab exercise.
 
-4. Verify the accounts were created — check the `/etc/passwd` entries:
+3. Verify accounts and home directories, then **save to `task1_users.txt`**:
    ```bash
-   $ grep "dev_alice\|dev_bob" /etc/passwd
+   grep "dev_alice\|dev_bob" /etc/passwd > task1_users.txt
+   ls -la /home/ | grep "dev_alice\|dev_bob" >> task1_users.txt
+   cat task1_users.txt
    ```
 
-5. Verify the home directories exist:
+   > 📸 **Screenshot 1:** Take a screenshot of the `cat task1_users.txt` output.  
+   > Save as `images/task1_user_creation.png`.
+
+4. Modify `dev_alice` — add a GECOS comment field with her full name:
    ```bash
-   $ ls -la /home/ | grep "dev_alice\|dev_bob"
+   sudo usermod -c "Alice Developer" dev_alice
+   grep dev_alice /etc/passwd
    ```
 
-6. Redirect the verification output to a file:
-   ```bash
-   $ grep "dev_alice\|dev_bob" /etc/passwd > task1_users.txt
-   $ ls -la /home/ >> task1_users.txt
-   $ cat task1_users.txt
-   ```
-
-   > 📸 **Required Screenshot 1:** Take a screenshot showing the output of `cat task1_users.txt`. Save as `task1_user_creation.png`.
-
-7. Modify `dev_alice` — add a comment (GECOS) field with her full name:
-   ```bash
-   $ sudo usermod -c "Alice Developer" dev_alice
-   $ grep dev_alice /etc/passwd
-   ```
-
-   > 📸 **Required Screenshot 2:** Take a screenshot showing the updated `/etc/passwd` entry for `dev_alice`. Save as `task1_user_modify.png`.
-
-8. Return to `lab6`:
-   ```bash
-   $ cd ..
-   ```
+   > 📸 **Screenshot 2:** Take a screenshot showing the updated `/etc/passwd` entry for `dev_alice`.  
+   > Save as `images/task1_user_modify.png`.
 
 ---
 
@@ -181,48 +169,41 @@ $ cd lab6
 
 **Scenario:** *"The two new engineers belong to the `devteam` group. Create it, add them both, and then verify the memberships."*
 
+> ⚠️ **Make sure you are in `lab6/` before running these commands.**
+
 **Instructions:**
 
 1. Create a new group called `devteam`:
    ```bash
-   $ sudo groupadd devteam
+   sudo groupadd devteam
    ```
 
 2. Add both users to the group:
    ```bash
-   $ sudo usermod -aG devteam dev_alice
-   $ sudo usermod -aG devteam dev_bob
+   sudo usermod -aG devteam dev_alice
+   sudo usermod -aG devteam dev_bob
    ```
 
-3. Verify group membership using two different methods:
+3. Verify group membership, then **save to `task2_groups.txt`**:
    ```bash
-   $ groups dev_alice
-   $ id dev_bob
+   groups dev_alice > task2_groups.txt
+   id dev_bob >> task2_groups.txt
+   grep devteam /etc/group >> task2_groups.txt
+   cat task2_groups.txt
    ```
 
-4. Inspect the `/etc/group` file entry:
+   > 📸 **Screenshot 3:** Take a screenshot of `cat task2_groups.txt`.  
+   > Save as `images/task2_group_setup.png`.
+
+4. Create an additional group `auditors` and add only `dev_alice`:
    ```bash
-   $ grep devteam /etc/group
+   sudo groupadd auditors
+   sudo usermod -aG auditors dev_alice
+   id dev_alice
    ```
 
-5. Save the output:
-   ```bash
-   $ groups dev_alice > task2_groups.txt
-   $ id dev_bob >> task2_groups.txt
-   $ grep devteam /etc/group >> task2_groups.txt
-   $ cat task2_groups.txt
-   ```
-
-   > 📸 **Required Screenshot 3:** Take a screenshot of `cat task2_groups.txt`. Save as `task2_group_setup.png`.
-
-6. Create an additional group called `auditors` and add only `dev_alice`:
-   ```bash
-   $ sudo groupadd auditors
-   $ sudo usermod -aG auditors dev_alice
-   $ id dev_alice
-   ```
-
-   > 📸 **Required Screenshot 4:** Take a screenshot of the `id dev_alice` output showing both `devteam` and `auditors` memberships. Save as `task2_multi_group.png`.
+   > 📸 **Screenshot 4:** Take a screenshot of `id dev_alice` showing both `devteam` and `auditors`.  
+   > Save as `images/task2_multi_group.png`.
 
 ---
 
@@ -230,106 +211,103 @@ $ cd lab6
 
 **Scenario:** *"Create a shared project directory for the `devteam` group. Set up permissions so that only team members can read and write files, but others cannot access the folder at all."*
 
+> ⚠️ **Make sure you are in `lab6/` before running these commands.**
+
 **Instructions:**
 
-1. Create a shared project directory:
+1. Create the shared project directory and set ownership/permissions:
    ```bash
-   $ sudo mkdir -p /opt/techcorp/devproject
+   sudo mkdir -p /opt/techcorp/devproject
+   sudo chown root:devteam /opt/techcorp/devproject
+   sudo chmod 770 /opt/techcorp/devproject
+   ls -ld /opt/techcorp/devproject
    ```
 
-2. Set the group owner to `devteam`:
+2. Create a test file inside the directory:
    ```bash
-   $ sudo chown root:devteam /opt/techcorp/devproject
+   sudo touch /opt/techcorp/devproject/project_notes.txt
+   sudo chown dev_alice:devteam /opt/techcorp/devproject/project_notes.txt
+   sudo chmod 664 /opt/techcorp/devproject/project_notes.txt
+   ls -l /opt/techcorp/devproject/
    ```
 
-3. Set permissions — owner full, group read/write/execute, others none:
+3. **Save permissions output to `task3_permissions.txt`**:
    ```bash
-   $ sudo chmod 770 /opt/techcorp/devproject
-   $ ls -ld /opt/techcorp/devproject
+   ls -ld /opt/techcorp/devproject > task3_permissions.txt
+   ls -l /opt/techcorp/devproject/ >> task3_permissions.txt
+   cat task3_permissions.txt
    ```
 
-4. Create a test file inside the directory:
+   > 📸 **Screenshot 5:** Take a screenshot of `cat task3_permissions.txt`.  
+   > Save as `images/task3_dir_permissions.png`.
+
+4. **Save `stat` output to `task3_stat_output.txt`**:
    ```bash
-   $ sudo touch /opt/techcorp/devproject/project_notes.txt
-   $ sudo chown dev_alice:devteam /opt/techcorp/devproject/project_notes.txt
-   $ sudo chmod 664 /opt/techcorp/devproject/project_notes.txt
+   stat /opt/techcorp/devproject > task3_stat_output.txt
+   cat task3_stat_output.txt
    ```
 
-5. Show the full permission listing:
+5. Test access control — create a user not in `devteam` and verify access is denied:
    ```bash
-   $ ls -l /opt/techcorp/devproject/
-   ```
-
-6. Save the output:
-   ```bash
-   $ ls -ld /opt/techcorp/devproject > task3_permissions.txt
-   $ ls -l /opt/techcorp/devproject/ >> task3_permissions.txt
-   $ cat task3_permissions.txt
-   ```
-
-   > 📸 **Required Screenshot 5:** Take a screenshot of `cat task3_permissions.txt`. Save as `task3_dir_permissions.png`.
-
-7. Test access control — attempt to read the file as a user **not** in `devteam`:
-   ```bash
-   $ sudo useradd -m -s /bin/bash temp_user
-   $ sudo su - temp_user -c "cat /opt/techcorp/devproject/project_notes.txt"
+   sudo useradd -m -s /bin/bash temp_user
+   sudo su - temp_user -c "cat /opt/techcorp/devproject/project_notes.txt"
    ```
    > **Expected:** `Permission denied` — because `temp_user` is not in `devteam`.
 
-   > 📸 **Required Screenshot 6:** Take a screenshot showing the `Permission denied` error. Save as `task3_access_denied.png`.
-
-8. Create a personal report of the permission change workflow:
-   ```bash
-   $ stat /opt/techcorp/devproject > task3_stat_output.txt
-   $ cat task3_stat_output.txt
-   ```
+   > 📸 **Screenshot 6:** Take a screenshot showing the `Permission denied` error.  
+   > Save as `images/task3_access_denied.png`.
 
 ---
 
 ## Task 4 — Special Permission Bits
 
-**Scenario:** *"Now configure the shared directory so that new files automatically inherit the group ownership (`setgid`), and no one can delete another user's files from the directory (sticky bit)."*
+**Scenario:** *"Configure the shared directory so that new files automatically inherit the group ownership (`setgid`), and no one can delete another user's files (sticky bit)."*
+
+> ⚠️ **Make sure you are in `lab6/` before running these commands.**
 
 **Instructions:**
 
 1. Apply the `setgid` bit to the shared directory:
    ```bash
-   $ sudo chmod g+s /opt/techcorp/devproject
-   $ ls -ld /opt/techcorp/devproject
+   sudo chmod g+s /opt/techcorp/devproject
+   ls -ld /opt/techcorp/devproject
    ```
-   > **Observe:** The group execute bit changes from `x` to `s`, indicating setgid is active.
+   > **Observe:** The group execute bit changes from `x` to `s`.
 
 2. Test `setgid` — switch to `dev_bob` and create a file:
    ```bash
-   $ sudo su - dev_bob -c "touch /opt/techcorp/devproject/bob_file.txt"
-   $ ls -l /opt/techcorp/devproject/
+   sudo su - dev_bob -c "touch /opt/techcorp/devproject/bob_file.txt"
+   ls -l /opt/techcorp/devproject/
    ```
-   > **Observe:** `bob_file.txt` should be owned by `dev_bob` but have `devteam` as the group — inherited from the directory.
+   > **Observe:** `bob_file.txt` should have `devteam` as its group (inherited from the directory).
 
-   > 📸 **Required Screenshot 7:** Take a screenshot showing the setgid directory listing and `bob_file.txt` with `devteam` group. Save as `task4_setgid.png`.
+   > 📸 **Screenshot 7:** Take a screenshot showing the setgid directory listing and `bob_file.txt` with the `devteam` group.  
+   > Save as `images/task4_setgid.png`.
 
 3. Apply the **sticky bit** to the directory:
    ```bash
-   $ sudo chmod +t /opt/techcorp/devproject
-   $ ls -ld /opt/techcorp/devproject
+   sudo chmod +t /opt/techcorp/devproject
+   ls -ld /opt/techcorp/devproject
    ```
-   > **Observe:** The others execute bit shows `t`, indicating the sticky bit is set.
+   > **Observe:** The others execute bit shows `t`.
 
 4. Test the sticky bit — `dev_bob` should NOT be able to delete `dev_alice`'s file:
    ```bash
-   $ sudo su - dev_bob -c "rm /opt/techcorp/devproject/project_notes.txt"
+   sudo su - dev_bob -c "rm /opt/techcorp/devproject/project_notes.txt"
    ```
-   > **Expected:** `Operation not permitted` — because `project_notes.txt` belongs to `dev_alice`.
+   > **Expected:** `Operation not permitted`
 
-   > 📸 **Required Screenshot 8:** Take a screenshot showing both the sticky bit in `ls -ld` and the `Operation not permitted` error. Save as `task4_sticky_bit.png`.
+   > 📸 **Screenshot 8:** Take a screenshot showing the `t` bit in `ls -ld` and the `Operation not permitted` error.  
+   > Save as `images/task4_sticky_bit.png`.
 
-5. Demonstrate `setuid` on an executable — create a simple C program:
+5. Create the `setuid` C program — **go into `security_lab/` first**:
    ```bash
-   $ cd security_lab
+   cd security_lab
    ```
 
    Create `whoami_suid.c`:
-   ```c
+   ```bash
+   cat > whoami_suid.c << 'EOF'
    #include <stdio.h>
    #include <unistd.h>
 
@@ -341,87 +319,90 @@ $ cd lab6
        execlp("whoami", "whoami", NULL);
        return 0;
    }
+   EOF
    ```
 
-6. Compile, set ownership, and apply setuid:
+6. Compile, set ownership, and apply `setuid`:
    ```bash
-   $ gcc -o whoami_suid whoami_suid.c
-   $ sudo chown root:root whoami_suid
-   $ sudo chmod u+s whoami_suid
-   $ ls -l whoami_suid
+   gcc -o whoami_suid whoami_suid.c
+   sudo chown root:root whoami_suid
+   sudo chmod u+s whoami_suid
+   ls -l whoami_suid
    ```
    > **Observe:** The owner execute bit shows `s` (setuid active).
 
 7. Run the program as `dev_alice`:
    ```bash
-   $ sudo su - dev_alice -c "/home/$(whoami)/os-lab-<YourStudentID>/lab6/security_lab/whoami_suid"
+   sudo su - dev_alice -c "$(pwd)/whoami_suid"
    ```
-   > **Note:** Adjust the path to match your actual lab directory. The effective UID will be `0` (root), while the real UID is `dev_alice`'s UID.
+   > The effective UID will be `0` (root) while the real UID is `dev_alice`'s UID.
 
-   > 📸 **Required Screenshot 9:** Take a screenshot showing `ls -l whoami_suid` with the setuid bit and the program's UID output. Save as `task4_setuid.png`.
+   > 📸 **Screenshot 9:** Take a screenshot showing `ls -l whoami_suid` with the setuid bit and the program's UID output.  
+   > Save as `images/task4_setuid.png`.
 
-8. Save a summary:
+8. **Return to `lab6/` and save summary to `task4_special_bits.txt`**:
    ```bash
-   $ ls -ld /opt/techcorp/devproject > task4_special_bits.txt
-   $ ls -l whoami_suid >> task4_special_bits.txt
-   $ cat task4_special_bits.txt
+   cd ..
+   ls -ld /opt/techcorp/devproject > task4_special_bits.txt
+   ls -l security_lab/whoami_suid >> task4_special_bits.txt
+   cat task4_special_bits.txt
    ```
 
 ---
 
 ## Task 5 — Access Control Lists (ACLs)
 
-**Scenario:** *"The `auditors` group needs read-only access to the project directory — but we cannot change the primary group of the directory. Use ACLs to grant fine-grained access without modifying standard permissions."*
+**Scenario:** *"The `auditors` group needs read-only access to the project directory — but we cannot change the primary group. Use ACLs to grant fine-grained access without modifying standard permissions."*
+
+> ⚠️ **Make sure you are in `lab6/` before running these commands.**
 
 **Instructions:**
 
-1. Check if ACL support is available:
+1. Check current ACL state:
    ```bash
-   $ getfacl /opt/techcorp/devproject
+   getfacl /opt/techcorp/devproject
    ```
 
-2. Grant the `auditors` group read and execute (traverse) access via ACL:
+2. Grant the `auditors` group read and execute access via ACL:
    ```bash
-   $ sudo setfacl -m g:auditors:rx /opt/techcorp/devproject
-   $ sudo setfacl -m g:auditors:r /opt/techcorp/devproject/project_notes.txt
+   sudo setfacl -m g:auditors:rx /opt/techcorp/devproject
+   sudo setfacl -m g:auditors:r /opt/techcorp/devproject/project_notes.txt
    ```
 
 3. View the resulting ACL:
    ```bash
-   $ getfacl /opt/techcorp/devproject
-   $ getfacl /opt/techcorp/devproject/project_notes.txt
+   getfacl /opt/techcorp/devproject
+   getfacl /opt/techcorp/devproject/project_notes.txt
    ```
-   > **Observe:** You will see a `group:auditors:r-x` ACE (Access Control Entry) in addition to the standard entries.
+   > **Observe:** You will see `group:auditors:r-x` ACE entries.
 
-   > 📸 **Required Screenshot 10:** Take a screenshot of `getfacl /opt/techcorp/devproject`. Save as `task5_acl_dir.png`.
+   > 📸 **Screenshot 10:** Take a screenshot of `getfacl /opt/techcorp/devproject`.  
+   > Save as `images/task5_acl_dir.png`.
 
-4. Test ACL access — `dev_alice` is in `auditors` and should now be able to read the file:
+4. Test ACL access — `dev_alice` (in `auditors`) should succeed, `temp_user` should be denied:
    ```bash
-   $ sudo su - dev_alice -c "cat /opt/techcorp/devproject/project_notes.txt"
+   sudo su - dev_alice -c "cat /opt/techcorp/devproject/project_notes.txt"
+   sudo su - temp_user -c "ls /opt/techcorp/devproject"
    ```
-   > **Expected:** Command succeeds (file may be empty, but no permission error).
+   > `dev_alice` succeeds (file may be empty, but no error). `temp_user` gets `Permission denied`.
 
-5. Verify `temp_user` (not in `auditors`) still cannot access the directory:
+   > 📸 **Screenshot 11:** Take a screenshot showing both results side by side.  
+   > Save as `images/task5_acl_test.png`.
+
+5. **Save ACL output to `task5_acl.txt`**:
    ```bash
-   $ sudo su - temp_user -c "ls /opt/techcorp/devproject"
-   ```
-   > **Expected:** `Permission denied`.
-
-   > 📸 **Required Screenshot 11:** Take a screenshot showing `dev_alice` succeeding and `temp_user` being denied. Save as `task5_acl_test.png`.
-
-6. Save the ACL output to a file:
-   ```bash
-   $ getfacl /opt/techcorp/devproject > task5_acl.txt
-   $ getfacl /opt/techcorp/devproject/project_notes.txt >> task5_acl.txt
-   $ cat task5_acl.txt
+   getfacl /opt/techcorp/devproject > task5_acl.txt
+   getfacl /opt/techcorp/devproject/project_notes.txt >> task5_acl.txt
+   cat task5_acl.txt
    ```
 
-   > 📸 **Required Screenshot 12:** Take a screenshot of `cat task5_acl.txt`. Save as `task5_acl_output.png`.
+   > 📸 **Screenshot 12:** Take a screenshot of `cat task5_acl.txt`.  
+   > Save as `images/task5_acl_output.png`.
 
-7. Clean up the ACL entry:
+6. Clean up the ACL entry:
    ```bash
-   $ sudo setfacl -x g:auditors /opt/techcorp/devproject
-   $ getfacl /opt/techcorp/devproject
+   sudo setfacl -x g:auditors /opt/techcorp/devproject
+   getfacl /opt/techcorp/devproject
    ```
 
 ---
@@ -430,7 +411,7 @@ $ cd lab6
 
 > ⭐ **Bonus Challenge (10 extra points)**
 
-**Scenario:** *"Create a `/opt/techcorp/dropbox` directory that behaves like a shared drop-box: any user can create files inside, but no user can read or delete another user's files. Apply setgid so all files belong to `devteam`, and the sticky bit so only owners can delete their own files."*
+**Scenario:** *"Create a `/opt/techcorp/dropbox` directory that behaves like a shared drop-box: any user can create files inside, but no user can read or delete another user's files."*
 
 **Requirements:**
 
@@ -443,48 +424,64 @@ $ cd lab6
    - Verifying `dev_bob` can create his own file.
 5. Document with screenshots and redirect output to `challenge_dropbox.txt`.
 
-> 📸 **Challenge Screenshot:** Show the final `ls -ld /opt/techcorp/dropbox` and the failed deletion attempt. Save as `challenge_dropbox.png`.
+> 📸 **Challenge Screenshot:** Show the final `ls -ld /opt/techcorp/dropbox` and the failed deletion attempt. Save as `images/challenge_dropbox.png`.
 
 ---
 
 ## Screenshot Checklist
 
-Before submitting, verify you have **all** required screenshots:
+Before submitting, verify you have **all** required screenshots in your `images/` folder:
 
 | # | File Name | Task | What It Shows |
 |:-:|-----------|:----:|---------------|
 | 1 | `task1_user_creation.png` | Task 1 | Output of `cat task1_users.txt` |
-| 2 | `task1_user_modify.png` | Task 1 | Updated `/etc/passwd` entry |
+| 2 | `task1_user_modify.png` | Task 1 | Updated `/etc/passwd` entry for `dev_alice` |
 | 3 | `task2_group_setup.png` | Task 2 | `cat task2_groups.txt` output |
-| 4 | `task2_multi_group.png` | Task 2 | `id dev_alice` with two groups |
-| 5 | `task3_dir_permissions.png` | Task 3 | `cat task3_permissions.txt` |
-| 6 | `task3_access_denied.png` | Task 3 | `Permission denied` error |
-| 7 | `task4_setgid.png` | Task 4 | Directory listing with `s` bit |
-| 8 | `task4_sticky_bit.png` | Task 4 | `t` bit in listing + deletion error |
-| 9 | `task4_setuid.png` | Task 4 | `s` bit on binary + UID output |
-| 10 | `task5_acl_dir.png` | Task 5 | `getfacl` directory output |
-| 11 | `task5_acl_test.png` | Task 5 | Alice succeeds, temp_user denied |
+| 4 | `task2_multi_group.png` | Task 2 | `id dev_alice` with both `devteam` and `auditors` |
+| 5 | `task3_dir_permissions.png` | Task 3 | `cat task3_permissions.txt` with `drwxrwx---` |
+| 6 | `task3_access_denied.png` | Task 3 | `Permission denied` error from `temp_user` |
+| 7 | `task4_setgid.png` | Task 4 | Directory listing with `s` bit + `bob_file.txt` |
+| 8 | `task4_sticky_bit.png` | Task 4 | `t` bit in listing + `Operation not permitted` |
+| 9 | `task4_setuid.png` | Task 4 | `s` bit on `whoami_suid` + UID output |
+| 10 | `task5_acl_dir.png` | Task 5 | `getfacl` showing `auditors` ACE |
+| 11 | `task5_acl_test.png` | Task 5 | `dev_alice` succeeds, `temp_user` denied |
 | 12 | `task5_acl_output.png` | Task 5 | `cat task5_acl.txt` |
+
+---
+
+## Answers to Lab Questions
+
+Fill these in your `README.md` before submitting:
+
+1. **What is the difference between `userdel` and `userdel -r`?**
+
+2. **Why is it safer to use `visudo` instead of directly editing `/etc/sudoers`?**
+
+3. **What happens when a `setgid` directory contains files created by different users? What benefit does this provide for team collaboration?**
+
+4. **What limitation of standard Unix permissions does the ACL system solve?**
 
 ---
 
 ## Final Submission
 
-### Required Folder Structure
+### Verify Your Folder Structure
+
+After completing all tasks, your `lab6/` folder should look exactly like this:
 
 ```
 os-se-<YourStudentID>/
 └── os-lab-<YourStudentID>/
     └── lab6/
-        ├── README.md                       ← Your documentation
-        ├── task1_users.txt
-        ├── task2_groups.txt
-        ├── task3_permissions.txt
-        ├── task3_stat_output.txt
-        ├── task4_special_bits.txt
-        ├── task5_acl.txt
+        ├── README.md
+        ├── task1_users.txt              ← created in Task 1, step 3
+        ├── task2_groups.txt             ← created in Task 2, step 3
+        ├── task3_permissions.txt        ← created in Task 3, step 3
+        ├── task3_stat_output.txt        ← created in Task 3, step 4
+        ├── task4_special_bits.txt       ← created in Task 4, step 8
+        ├── task5_acl.txt                ← created in Task 5, step 5
         ├── security_lab/
-        │   └── whoami_suid.c
+        │   └── whoami_suid.c            ← created in Task 4, step 5
         └── images/
             ├── task1_user_creation.png
             ├── task1_user_modify.png
@@ -500,11 +497,16 @@ os-se-<YourStudentID>/
             └── task5_acl_output.png
 ```
 
+You can quickly verify your `.txt` files are all present:
+```bash
+ls -1 ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab6/*.txt
+```
+
 ### Git Push
 
 ```bash
-$ cd ~/os-se-<YourStudentID>
-$ git add .
-$ git commit -m "Lab 6: Linux Security, Users, Groups & File Permissions"
-$ git push origin main
+cd ~/os-se-<YourStudentID>
+git add .
+git commit -m "Lab 6: Linux Security, Users, Groups & File Permissions"
+git push origin main
 ```

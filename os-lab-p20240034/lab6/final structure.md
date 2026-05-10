@@ -1,0 +1,23 @@
+✅ README.md 4.55/4.55
+🕒 May 10, 15:36
+❌ task1_users.txt 0/4.55
+❌ task2_groups.txt 0/4.55
+❌ task3_permissions.txt 0/4.55
+❌ task3_stat_output.txt 0/4.55
+❌ task4_special_bits.txt 0/4.55
+❌ task5_acl.txt 0/4.55
+❌ security_lab/whoami_suid.c 0/4.55
+❌ images/task1_user_creation.png 0/4.55
+❌ images/task1_user_modify.png 0/4.55
+❌ images/task2_group_setup.png 0/4.55
+❌ images/task2_multi_group.png 0/4.55
+❌ images/task3_dir_permissions.png 0/4.55
+❌ images/task3_access_denied.png 0/4.55
+❌ images/task4_setgid.png 0/4.55
+❌ images/task4_sticky_bit.png 0/4.55
+❌ images/task4_setuid.png 0/4.55
+❌ images/task5_acl_dir.png 0/4.55
+❌ images/task5_acl_test.png 0/4.55
+❌ images/task5_acl_output.png 0/4.55
+❌ images 0/4.55
+❌ security_lab 0/4.55

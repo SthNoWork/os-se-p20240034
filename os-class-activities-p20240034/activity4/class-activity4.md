@@ -1,147 +1,50 @@
-# Class Activity 4 — Shared File API: C++ Mutex & Java `synchronized`
+# Class Activity 4 — Shared File API: C++ Mutex & Java synchronized
 
-> **Related Lectures**: Week 7 — Critical Sections, Week 8 — Synchronization  
-> **Topics**: Race conditions, shared files, client/server design, C++ `std::mutex`, Java `synchronized`  
-> **Language**: C++, Java  
-> **Environment**: Two student machines on the same network, with `g++` and Java JDK
+> **Topics:** Race conditions, shared files, C++ `std::mutex`, Java `synchronized`
+> **Environment:** Two machines on the same network, with `g++` and Java JDK
 
 ---
 
-## Objective
+## Overview
 
-In this activity, each pair builds a small **server program** that acts like an API for updating a shared file. One student's machine will run the server. Both students will run client programs from their own machines at the same time.
+One student's machine runs the **server**. Both students run **client** programs
+at the same time. The server is the only program that touches `shared_score.txt`.
 
-Clients do **not** update the file directly. Instead, clients connect to the server and send a request such as:
-
-```text
-ADD studentA
-```
-
-The server receives the request and updates:
-
-```text
-shared_score.txt
-```
-
-You will run the server in two versions:
-
-1. **Before synchronization** — race condition can happen.
-2. **After synchronization** — C++ uses `std::mutex`, Java uses `synchronized`.
-
-By the end, you should understand why one server program can safely control a shared file, and why the server still needs synchronization when it handles multiple client requests at the same time.
+You run each server in two versions:
+1. **Before** synchronization — race condition can happen
+2. **After** synchronization — C++ uses `std::mutex`, Java uses `synchronized`
 
 ---
 
-## Key Idea
-
-Without a server:
-
-```text
-Client A writes shared_score.txt
-Client B writes shared_score.txt
-Client C writes shared_score.txt
-```
-
-Many programs touch the same file directly. Race conditions are likely.
-
-With a server:
-
-```text
-Client A ─┐
-Client B ─┼──> Server API ───> shared_score.txt
-Client C ─┘
-```
-
-Only the server touches the file. The clients send requests.
-
-However, if the server creates one thread per client, then multiple server threads may still update the file at the same time. That is why the server needs a mutex or synchronized method.
-
----
-
-## Task Overview
-
-| Task | What You Do | Screenshot Required |
-|------|-------------|--------------------|
-| **Task 1** | Run C++ server/client before mutex | C++ before mutex |
-| **Task 2** | Run C++ server/client after mutex | C++ after mutex |
-| **Task 3** | Run Java server/client before `synchronized` | Java before synchronized |
-| **Task 4** | Run Java server/client after `synchronized` | Java after synchronized |
-
-You must submit **4 screenshots total**. Each screenshot may be a combined screenshot/collage, but it must include the server terminal and both client terminals:
-
-1. C++ server before mutex
-2. C++ server after mutex
-3. Java server before `synchronized`
-4. Java server after `synchronized`
-
-Each screenshot must show:
-
-- The server terminal
-- Student A's client terminal
-- Student B's client terminal
-- The final `shared_score.txt` value
-
----
-
-## Pair Setup
-
-Choose one machine to be the **server machine**. Both students will use their own machines as clients.
-
-On the server machine, create your activity folder:
+## Setup — Run Once on the Server Machine
 
 ```bash
-$ mkdir -p activity4/{cpp_before,cpp_after,java_before,java_after,screenshots}
-$ cd activity4
-$ echo 0 > shared_score.txt
+cd ~/Desktop/github/os-se-p20240034/os-class-activities-p20240034
+mkdir -p activity4/{cpp_before,cpp_after,java_before,java_after,screenshots}
+cd activity4
+echo 0 > shared_score.txt
 ```
 
-Find the server machine's IP address:
-
+Set your activity path as a variable (re-run this in every new terminal):
 ```bash
-$ hostname -I
+ACT4=~/Desktop/github/os-se-p20240034/os-class-activities-p20240034/activity4
 ```
 
-Write this IP address in your README. Your partner will use it when running the client.
-
-Example:
-
-```text
-Server IP: 192.168.1.25
-```
-
-Whenever you see `<SERVER_IP>` in a command, replace it with the real IP address of the server machine.
-
-Example:
-
+Get the server IP — **share this with your partner**:
 ```bash
-$ ./cpp_before/client 192.168.1.25 A_1
-$ java -cp java_before ScoreClient 192.168.1.25 B_1
+hostname -I
 ```
 
-If a port is already used on your machine, change the port number in both the matching server and client.
-
-Both students need a copy of the client program folder on their own machines. The server machine needs both the server and client files.
-
-Suggested ports:
-
-| Version | Port |
-|---------|------|
-| C++ before mutex | 9001 |
-| C++ after mutex | 9002 |
-| Java before synchronized | 9011 |
-| Java after synchronized | 9012 |
+> Write down the IP. Replace `<SERVER_IP>` in every client command with the real IP.
 
 ---
 
-## Task 1: C++ Server Before Mutex
+## Task 1 — C++ Server Before Mutex
 
-### Goal
+### Server Machine: Create the files
 
-Run a C++ server that handles each client in a separate thread, but does **not** protect the shared file.
-
-### Create `cpp_before/server_no_mutex.cpp`
-
-```cpp
+```bash
+cat > $ACT4/cpp_before/server_no_mutex.cpp << 'EOF'
 #include <arpa/inet.h>
 #include <chrono>
 #include <fstream>
@@ -204,11 +107,11 @@ int main() {
         std::thread(handle_client, client_socket).detach();
     }
 }
+EOF
 ```
 
-### Create `cpp_before/client.cpp`
-
-```cpp
+```bash
+cat > $ACT4/cpp_before/client.cpp << 'EOF'
 #include <arpa/inet.h>
 #include <iostream>
 #include <string>
@@ -242,79 +145,63 @@ int main(int argc, char* argv[]) {
     close(sock);
     return 0;
 }
+EOF
 ```
 
-### Compile and Run
-
-Open Terminal 1:
+### Server Machine: Compile and start the server
 
 ```bash
-$ cd activity4
-$ echo 0 > shared_score.txt
-$ g++ -std=c++17 cpp_before/server_no_mutex.cpp -o cpp_before/server_no_mutex -pthread
-$ ./cpp_before/server_no_mutex
+cd $ACT4
+echo 0 > shared_score.txt
+g++ -std=c++17 cpp_before/server_no_mutex.cpp -o cpp_before/server_no_mutex -pthread
+./cpp_before/server_no_mutex
 ```
 
-On Student A's machine:
+> Leave this terminal running. Open a new terminal for the client.
+
+### Student A — run clients (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ g++ -std=c++17 cpp_before/client.cpp -o cpp_before/client
-$ for i in {1..10}; do ./cpp_before/client <SERVER_IP> A_$i & done
-$ wait
+cd $ACT4
+g++ -std=c++17 cpp_before/client.cpp -o cpp_before/client
+for i in {1..10}; do ./cpp_before/client <SERVER_IP> A_$i & done
+wait
 ```
 
-On Student B's machine, run at the same time:
+### Student B — run at the same time (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ g++ -std=c++17 cpp_before/client.cpp -o cpp_before/client
-$ for i in {1..10}; do ./cpp_before/client <SERVER_IP> B_$i & done
-$ wait
+cd $ACT4
+g++ -std=c++17 cpp_before/client.cpp -o cpp_before/client
+for i in {1..10}; do ./cpp_before/client <SERVER_IP> B_$i & done
+wait
 ```
-
-On the server machine:
-
-```bash
-$ cat shared_score.txt
-```
-
-Expected idea:
-
-```text
-Expected score: 20
-Actual score may be less than 20
-```
-
-Repeat the test several times. Reset the file before each test:
-
-```bash
-$ echo 0 > shared_score.txt
-```
-
-The race condition may not appear every time because it depends on timing.
-
-Take one screenshot:
-
-```text
-screenshots/cpp_before_mutex.png
-```
-
-The screenshot must show the server terminal and both students' client terminals.
 
 ---
 
-## Task 2: C++ Server After Mutex
+📸 **Screenshot 1 starts here** — on the server machine:
+```bash
+cat $ACT4/shared_score.txt
+```
+📸 **Screenshot 1 ends here**
+> Capture all 3 terminals (server + both clients) in one screenshot.
+> Save as: `screenshots/cpp_before_mutex.png`
 
-### Goal
+---
 
-Fix the server by protecting the file update with `std::mutex`.
+Stop the server with `Ctrl+C`, then reset:
+```bash
+echo 0 > $ACT4/shared_score.txt
+```
 
-### Create `cpp_after/server_mutex.cpp`
+---
 
-Use the same server as Task 1, but add a mutex.
+## Task 2 — C++ Server After Mutex
 
-```cpp
+### Server Machine: Create the files
+
+```bash
+cat > $ACT4/cpp_after/server_mutex.cpp << 'EOF'
 #include <arpa/inet.h>
 #include <chrono>
 #include <fstream>
@@ -381,78 +268,99 @@ int main() {
         std::thread(handle_client, client_socket).detach();
     }
 }
+EOF
 ```
 
-### Create `cpp_after/client.cpp`
+```bash
+cat > $ACT4/cpp_after/client.cpp << 'EOF'
+#include <arpa/inet.h>
+#include <iostream>
+#include <string>
+#include <unistd.h>
 
-Same as the previous C++ client, but change the port:
-
-```cpp
 const int PORT = 9002;
+
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        std::cout << "Usage: ./client <server_ip> <student_name>" << std::endl;
+        return 1;
+    }
+
+    std::string server_ip = argv[1];
+    std::string name = argv[2];
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    sockaddr_in server{};
+    server.sin_family = AF_INET;
+    server.sin_port = htons(PORT);
+    inet_pton(AF_INET, server_ip.c_str(), &server.sin_addr);
+
+    connect(sock, (sockaddr*)&server, sizeof(server));
+    send(sock, name.c_str(), name.size(), 0);
+
+    char buffer[1024] = {0};
+    read(sock, buffer, sizeof(buffer) - 1);
+    std::cout << buffer;
+
+    close(sock);
+    return 0;
+}
+EOF
 ```
 
-### Compile and Run
-
-Terminal 1:
+### Server Machine: Compile and start the server
 
 ```bash
-$ cd activity4
-$ echo 0 > shared_score.txt
-$ g++ -std=c++17 cpp_after/server_mutex.cpp -o cpp_after/server_mutex -pthread
-$ ./cpp_after/server_mutex
+cd $ACT4
+echo 0 > shared_score.txt
+g++ -std=c++17 cpp_after/server_mutex.cpp -o cpp_after/server_mutex -pthread
+./cpp_after/server_mutex
 ```
 
-On Student A's machine:
+### Student A — run clients (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ g++ -std=c++17 cpp_after/client.cpp -o cpp_after/client
-$ for i in {1..10}; do ./cpp_after/client <SERVER_IP> A_$i & done
-$ wait
+cd $ACT4
+g++ -std=c++17 cpp_after/client.cpp -o cpp_after/client
+for i in {1..10}; do ./cpp_after/client <SERVER_IP> A_$i & done
+wait
 ```
 
-On Student B's machine, run at the same time:
+### Student B — run at the same time (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ g++ -std=c++17 cpp_after/client.cpp -o cpp_after/client
-$ for i in {1..10}; do ./cpp_after/client <SERVER_IP> B_$i & done
-$ wait
+cd $ACT4
+g++ -std=c++17 cpp_after/client.cpp -o cpp_after/client
+for i in {1..10}; do ./cpp_after/client <SERVER_IP> B_$i & done
+wait
 ```
-
-On the server machine:
-
-```bash
-$ cat shared_score.txt
-```
-
-Expected result:
-
-```text
-20
-```
-
-Repeat the test multiple times. After adding the mutex, the final result should be consistent.
-
-Take one screenshot:
-
-```text
-screenshots/cpp_after_mutex.png
-```
-
-The screenshot must show the server terminal and both students' client terminals.
 
 ---
 
-## Task 3: Java Server Before `synchronized`
+📸 **Screenshot 2 starts here** — on the server machine:
+```bash
+cat $ACT4/shared_score.txt
+```
+📸 **Screenshot 2 ends here**
+> Capture all 3 terminals in one screenshot. Score should be exactly 20.
+> Save as: `screenshots/cpp_after_mutex.png`
 
-### Goal
+---
 
-Run a Java server that handles each client in a new thread, but does **not** protect the shared file.
+Stop the server with `Ctrl+C`, then reset:
+```bash
+echo 0 > $ACT4/shared_score.txt
+```
 
-### Create `java_before/ScoreServerNoSync.java`
+---
 
-```java
+## Task 3 — Java Server Before synchronized
+
+### Server Machine: Create the files
+
+```bash
+cat > $ACT4/java_before/ScoreServerNoSync.java << 'EOF'
 import java.io.*;
 import java.net.*;
 
@@ -510,11 +418,11 @@ public class ScoreServerNoSync {
         }
     }
 }
+EOF
 ```
 
-### Create `java_before/ScoreClient.java`
-
-```java
+```bash
+cat > $ACT4/java_before/ScoreClient.java << 'EOF'
 import java.io.*;
 import java.net.*;
 
@@ -540,73 +448,59 @@ public class ScoreClient {
         socket.close();
     }
 }
+EOF
 ```
 
-### Compile and Run
-
-Terminal 1:
+### Server Machine: Compile and start the server
 
 ```bash
-$ cd activity4
-$ echo 0 > shared_score.txt
-$ javac java_before/ScoreServerNoSync.java java_before/ScoreClient.java
-$ java -cp java_before ScoreServerNoSync
+cd $ACT4
+echo 0 > shared_score.txt
+javac java_before/ScoreServerNoSync.java java_before/ScoreClient.java
+java -cp java_before ScoreServerNoSync
 ```
 
-On Student A's machine:
+### Student A — run clients (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ for i in {1..10}; do java -cp java_before ScoreClient <SERVER_IP> A_$i & done
-$ wait
+cd $ACT4
+for i in {1..10}; do java -cp java_before ScoreClient <SERVER_IP> A_$i & done
+wait
 ```
 
-On Student B's machine, run at the same time:
+### Student B — run at the same time (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ for i in {1..10}; do java -cp java_before ScoreClient <SERVER_IP> B_$i & done
-$ wait
+cd $ACT4
+for i in {1..10}; do java -cp java_before ScoreClient <SERVER_IP> B_$i & done
+wait
 ```
-
-On the server machine:
-
-```bash
-$ cat shared_score.txt
-```
-
-Expected idea:
-
-```text
-Expected score: 20
-Actual score may be less than 20
-```
-
-Repeat the test several times. Reset the file before each test:
-
-```bash
-$ echo 0 > shared_score.txt
-```
-
-Take one screenshot:
-
-```text
-screenshots/java_before_synchronized.png
-```
-
-The screenshot must show the server terminal and both students' client terminals.
 
 ---
 
-## Task 4: Java Server After `synchronized`
+📸 **Screenshot 3 starts here** — on the server machine:
+```bash
+cat $ACT4/shared_score.txt
+```
+📸 **Screenshot 3 ends here**
+> Capture all 3 terminals in one screenshot.
+> Save as: `screenshots/java_before_synchronized.png`
 
-### Goal
+---
 
-Fix the Java server by protecting the file update with `synchronized`.
+Stop the server with `Ctrl+C`, then reset:
+```bash
+echo 0 > $ACT4/shared_score.txt
+```
 
-### Create `java_after/ScoreServerSync.java`
+---
 
-```java
+## Task 4 — Java Server After synchronized
+
+### Server Machine: Create the files
+
+```bash
+cat > $ACT4/java_after/ScoreServerSync.java << 'EOF'
 import java.io.*;
 import java.net.*;
 
@@ -664,225 +558,98 @@ public class ScoreServerSync {
         }
     }
 }
+EOF
 ```
-
-### Create `java_after/ScoreClient.java`
-
-Same as the previous Java client, but change the port:
-
-```java
-private static final int PORT = 9012;
-```
-
-### Compile and Run
-
-Terminal 1:
 
 ```bash
-$ cd activity4
-$ echo 0 > shared_score.txt
-$ javac java_after/ScoreServerSync.java java_after/ScoreClient.java
-$ java -cp java_after ScoreServerSync
+cat > $ACT4/java_after/ScoreClient.java << 'EOF'
+import java.io.*;
+import java.net.*;
+
+public class ScoreClient {
+    private static final int PORT = 9012;
+
+    public static void main(String[] args) throws Exception {
+        if (args.length < 2) {
+            System.out.println("Usage: java ScoreClient <server_ip> <student_name>");
+            return;
+        }
+
+        String serverIp = args[0];
+        String name = args[1];
+
+        Socket socket = new Socket(serverIp, PORT);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        out.println(name);
+        System.out.println(in.readLine());
+
+        socket.close();
+    }
+}
+EOF
 ```
 
-On Student A's machine:
+### Server Machine: Compile and start the server
 
 ```bash
-$ cd activity4
-$ for i in {1..10}; do java -cp java_after ScoreClient <SERVER_IP> A_$i & done
-$ wait
+cd $ACT4
+echo 0 > shared_score.txt
+javac java_after/ScoreServerSync.java java_after/ScoreClient.java
+java -cp java_after ScoreServerSync
 ```
 
-On Student B's machine, run at the same time:
+### Student A — run clients (replace `<SERVER_IP>`):
 
 ```bash
-$ cd activity4
-$ for i in {1..10}; do java -cp java_after ScoreClient <SERVER_IP> B_$i & done
-$ wait
+cd $ACT4
+for i in {1..10}; do java -cp java_after ScoreClient <SERVER_IP> A_$i & done
+wait
 ```
 
-On the server machine:
+### Student B — run at the same time (replace `<SERVER_IP>`):
 
 ```bash
-$ cat shared_score.txt
+cd $ACT4
+for i in {1..10}; do java -cp java_after ScoreClient <SERVER_IP> B_$i & done
+wait
 ```
 
-Expected result:
+---
 
-```text
-20
+📸 **Screenshot 4 starts here** — on the server machine:
+```bash
+cat $ACT4/shared_score.txt
 ```
-
-Repeat the test multiple times. After adding `synchronized`, the final result should be consistent.
-
-Take one screenshot:
-
-```text
-screenshots/java_after_synchronized.png
-```
-
-The screenshot must show the server terminal and both students' client terminals.
+📸 **Screenshot 4 ends here**
+> Capture all 3 terminals in one screenshot. Score should be exactly 20.
+> Save as: `screenshots/java_after_synchronized.png`
 
 ---
 
-## Questions
-
-Answer these in your `README.md`:
-
-1. Why should clients send requests to the server instead of writing the file directly?
-2. Why does the server still have a race condition before mutex or `synchronized`?
-3. In the C++ fixed version, what does `std::lock_guard<std::mutex>` protect?
-4. In the Java fixed version, what does `synchronized` protect?
-5. Why is the final score expected to be 20 when Student A sends 10 requests and Student B sends 10 requests?
-6. What could happen if two separate servers update the same file at the same time?
+Stop the server with `Ctrl+C`.
 
 ---
 
-## Deliverables & Submission
-
-### Required Screenshots
-
-Submit these 4 screenshots:
-
-```text
-screenshots/cpp_before_mutex.png
-screenshots/cpp_after_mutex.png
-screenshots/java_before_synchronized.png
-screenshots/java_after_synchronized.png
-```
-
-Each screenshot should show:
-
-- Server running
-- Student A's client program running from Student A's machine
-- Student B's client program running from Student B's machine
-- Final `shared_score.txt` value
-
-### Pair Submission Rule
-
-Both partners should upload the **same result files, source files, and screenshots** to their own Git repositories. You may work together and share the same evidence, but each student must still submit it inside their own `os-class-activities-<YourStudentID>/activity4/` folder.
-
-### Submission Folder Structure
-
-```
-os-se-<YourStudentID>/
-└── os-class-activities-<YourStudentID>/
-    └── activity4/
-        ├── README.md
-        ├── shared_score.txt
-        ├── screenshots/
-        │   ├── cpp_before_mutex.png
-        │   ├── cpp_after_mutex.png
-        │   ├── java_before_synchronized.png
-        │   └── java_after_synchronized.png
-        ├── cpp_before/
-        │   ├── server_no_mutex.cpp
-        │   └── client.cpp
-        ├── cpp_after/
-        │   ├── server_mutex.cpp
-        │   └── client.cpp
-        ├── java_before/
-        │   ├── ScoreServerNoSync.java
-        │   └── ScoreClient.java
-        └── java_after/
-            ├── ScoreServerSync.java
-            └── ScoreClient.java
-```
-
-### README Template
-
-````markdown
-# Class Activity 4 — Shared File API
-
-- **Student Name:** [Your Name]
-- **Student ID:** [Your ID]
-- **Partner Name:** [Partner Name]
-- **Partner Student ID:** [Partner ID]
-- **Server Machine Owner:** [Your Name or Partner Name]
-- **Server IP Address:** [Example: 192.168.1.25]
-
----
-
-## Task 1: C++ Before Mutex
-
-![C++ before mutex](screenshots/cpp_before_mutex.png)
-
-- Expected score after 20 total client requests:
-- Actual score:
-- What happened:
-
----
-
-## Task 2: C++ After Mutex
-
-![C++ after mutex](screenshots/cpp_after_mutex.png)
-
-- Expected score after 20 total client requests:
-- Actual score:
-- What changed after adding mutex:
-
----
-
-## Task 3: Java Before Synchronized
-
-![Java before synchronized](screenshots/java_before_synchronized.png)
-
-- Expected score after 20 total client requests:
-- Actual score:
-- What happened:
-
----
-
-## Task 4: Java After Synchronized
-
-![Java after synchronized](screenshots/java_after_synchronized.png)
-
-- Expected score after 20 total client requests:
-- Actual score:
-- What changed after adding synchronized:
-
----
-
-## Questions
-
-1. Why should clients send requests to the server instead of writing the file directly?
-2. Why does the server still have a race condition before mutex or synchronized?
-3. In the C++ fixed version, what does `std::lock_guard<std::mutex>` protect?
-4. In the Java fixed version, what does `synchronized` protect?
-5. Why is the final score expected to be 20 when Student A sends 10 requests and Student B sends 10 requests?
-6. What could happen if two separate servers update the same file at the same time?
-
----
-
-## Reflection
-
-_Compare the C++ and Java synchronization approaches. What did this activity teach you about protecting shared resources?_
-````
-
----
-
-## Grading Criteria
-
-| Criteria | Points | Description |
-|----------|--------|-------------|
-| **C++ Before Mutex** | 20 | Server/client compile and run. Screenshot shows race condition or explains observed result. |
-| **C++ After Mutex** | 20 | Server/client compile and run. Mutex protects file update and final score is correct. |
-| **Java Before Synchronized** | 20 | Server/client compile and run. Screenshot shows race condition or explains observed result. |
-| **Java After Synchronized** | 20 | Server/client compile and run. `synchronized` protects file update and final score is correct. |
-| **README + Questions** | 20 | Screenshots embedded, answers are clear, and reflection compares C++ and Java. |
-| **Total** | **100** | |
-
----
-
-## Tips
-
-- Always reset the file before each test:
+## Verify Your Folder Structure
 
 ```bash
-$ echo 0 > shared_score.txt
+ls -1 $ACT4
+ls -1 $ACT4/cpp_before/
+ls -1 $ACT4/cpp_after/
+ls -1 $ACT4/java_before/
+ls -1 $ACT4/java_after/
+ls -1 $ACT4/screenshots/
 ```
 
-- Stop a server with `Ctrl+C` before starting another server on the same port.
-- If a port is already used, change the port number in both the server and client.
-- If the unsafe version accidentally gives `20`, run it again. Race conditions depend on timing.
-- The server is the only program that should update `shared_score.txt`.
+---
+
+## Git Push
+
+```bash
+cd ~/Desktop/github/os-se-p20240034
+git add .
+git commit -m "Activity 4: Shared File API with C++ mutex and Java synchronized"
+git push origin main
+```

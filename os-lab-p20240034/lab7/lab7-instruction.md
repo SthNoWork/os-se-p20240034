@@ -12,22 +12,11 @@
 
 > ⚠️ **IMPORTANT — READ EVERYTHING FIRST**
 >
-> **Before you type a single command, read through this ENTIRE document from top to bottom.** This lab has several scripts that depend on files and permissions created in earlier tasks. If you skip ahead, later tasks may fail in confusing ways.
->
-> **Document structure:**
-> 1. **Lab Objectives** — What you'll learn
-> 2. **Task Overview** — Summary of all tasks
-> 3. **Lab Setup** — Repository and folder preparation
-> 4. **Quick Reference** — Bash and permission reminders
-> 5. **Tasks 1–8 (Required)** — Scripting, PATH, permissions, SUID, harvesting, mailbox automation
-> 6. **Deliverables & Submission** — Folder structure, README template, git push
-> 7. **Screenshot Checklist** — Every screenshot you need, in one place
+> This lab has scripts that depend on files and permissions created in earlier tasks. Do not skip ahead.
 
 ---
 
 ## Lab Objectives
-
-After completing this lab, students will be able to:
 
 1. Write executable Bash scripts using a shebang.
 2. Add a personal `~/bin` directory to the shell `PATH`.
@@ -38,7 +27,7 @@ After completing this lab, students will be able to:
 7. Write scripts that safely inspect peer directories on a shared Linux server.
 8. Automate cross-user feedback by writing messages into peer drop-boxes.
 
-> **Scenario:** You are building a small "server neighborhood" inside `/home`. Each student has a house, an inbox, an outbox, and a few automation bots. Your goal is to make your own space useful while also interacting safely with classmates' spaces.
+> **Scenario:** You are building a small "server neighborhood" inside `/home`. Each student has a house, an inbox, an outbox, and a few automation bots.
 
 ---
 
@@ -59,35 +48,30 @@ After completing this lab, students will be able to:
 
 ## Lab Setup
 
-Navigate into your existing lab submission repository and create the `lab7` directory:
+Navigate into your repo and create the lab7 directory structure all at once:
 
 ```bash
-$ cd ~/os-se-<YourStudentID>/os-lab-<YourStudentID>
-$ mkdir lab7
-$ cd lab7
-$ mkdir images
+cd ~/Desktop/github/os-se-p20240034/os-lab-p20240034
+mkdir -p lab7/images lab7/scripts
+cd lab7
 ```
 
-### Working Location
+> ✅ This creates:
+> ```
+> lab7/
+> ├── images/
+> └── scripts/
+> ```
 
-Most scripts in this lab must live in your Linux home directory:
+> ⚠️ **Your lab7 path is:**
+> `~/Desktop/github/os-se-p20240034/os-lab-p20240034/lab7/`
+> This is referred to as `LAB7` in every command below.
 
+Set it as a variable so you don't have to type it every time:
 ```bash
-~/bin/
+LAB7=~/Desktop/github/os-se-p20240034/os-lab-p20240034/lab7
 ```
-
-Your submission files and screenshots must be saved in:
-
-```bash
-~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/
-```
-
-### Documenting Your Work
-
-1. Save all screenshots in `lab7/images/`.
-2. Save required command outputs into `.txt` files in `lab7/`.
-3. Keep your scripts in `~/bin/`, but also copy them into `lab7/scripts/` before submission.
-4. Work with at least one classmate for the mailbox, guestbook, harvester, and mailman tests.
+> ⚠️ You must re-run this line any time you open a new terminal.
 
 ---
 
@@ -101,7 +85,6 @@ Your submission files and screenshots must be saved in:
 | `chmod +x scriptname` | Makes a script executable |
 | `./scriptname` | Runs a script from the current directory |
 | `echo "text"` | Prints text |
-| `pwd` | Prints current working directory |
 | `date +"%Y-%m-%d %H:%M:%S"` | Prints a formatted timestamp |
 
 ### PATH and Configuration
@@ -122,201 +105,176 @@ Your submission files and screenshots must be saved in:
 | `chmod 600 file` | Owner read/write only |
 | `chmod u+s file` | Sets SUID bit on an executable |
 
-### Bash Logic
+---
 
-| Syntax | Purpose |
-|--------|---------|
-| `value=$(command)` | Stores command output in a variable |
-| `for item in /home/*; do ... done` | Loops through matching paths |
-| `[ -f "$file" ]` | Tests whether a regular file exists |
-| `[ -r "$file" ]` | Tests whether a file is readable |
-| `while read -r line; do ... done < file` | Reads a file line by line |
+## Task 1 — Warm-Up Script
+
+**Scenario:** *"Prove that you understand how Linux executes script files."*
+
+Create your personal script directory:
+
+```bash
+mkdir -p ~/bin
+chmod 755 ~/bin
+```
+
+Create the `warmup` script:
+
+```bash
+cat > ~/bin/warmup << 'EOF'
+#!/bin/bash
+echo "Hello from my first script! My current directory is:"
+pwd
+EOF
+```
+
+Try running it without execute permission first (this should fail):
+
+```bash
+./~/bin/warmup
+```
+
+Now make it executable and run it:
+
+```bash
+chmod +x ~/bin/warmup
+~/bin/warmup
+```
+
+Save evidence to `task1_warmup.txt`:
+
+```bash
+{
+echo "=== warmup permissions ==="
+ls -l ~/bin/warmup
+echo "=== warmup output ==="
+~/bin/warmup
+} > $LAB7/task1_warmup.txt
+```
 
 ---
 
-## Task 1 — Warm-Up Script: Permissions & Execution
-
-**Scenario:** *"Before automating the server, prove that you understand how Linux executes script files."*
-
-**Instructions:**
-
-1. Create your personal script directory:
-   ```bash
-   $ mkdir -p ~/bin
-   $ chmod 755 ~/bin
-   $ cd ~/bin
-   ```
-
-2. Create a file named `warmup` with no `.sh` extension:
-   ```bash
-   $ nano warmup
-   ```
-
-3. Add this content:
-   ```bash
-   #!/bin/bash
-   echo "Hello from my first script! My current directory is:"
-   pwd
-   ```
-
-4. Try to run it by name:
-   ```bash
-   $ warmup
-   ```
-   > Expected: `command not found` if `~/bin` is not in your `PATH` yet.
-
-5. Try to run it from the current directory:
-   ```bash
-   $ ./warmup
-   ```
-   > Expected: `Permission denied` because the file is not executable yet.
-
-6. Make it executable and run it successfully:
-   ```bash
-   $ chmod +x warmup
-   $ ./warmup
-   ```
-
-7. Save evidence:
-   ```bash
-   $ {
-   > echo "=== warmup permissions ==="
-   > ls -l ~/bin/warmup
-   > echo "=== warmup output ==="
-   > ~/bin/warmup
-   > } > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task1_warmup.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task1_warmup.txt
-   ```
-
-   > 📸 **Required Screenshot 1:** Save as `images/task1_warmup.png`.
+📸 **Screenshot 1 starts here:**
+```bash
+cat $LAB7/task1_warmup.txt
+```
+📸 **Screenshot 1 ends here**
+> Save as: `images/task1_warmup.png`
 
 ---
 
-## Task 2 — Custom Command Center: Setting Up `PATH`
+## Task 2 — Custom Command Center: Setting Up PATH
 
-**Scenario:** *"System administrators do not type `./` every time. Make your personal scripts run like normal commands."*
+**Scenario:** *"Make your personal scripts run like normal commands without typing `./`."*
 
-**Instructions:**
+Add `~/bin` to your PATH in `.bashrc`:
 
-1. Open your `.bashrc`:
-   ```bash
-   $ nano ~/.bashrc
-   ```
+```bash
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
 
-2. Add this line near the bottom:
-   ```bash
-   export PATH="$HOME/bin:$PATH"
-   ```
+Save evidence to `task2_path.txt`:
 
-3. Reload your configuration:
-   ```bash
-   $ source ~/.bashrc
-   ```
+```bash
+{
+echo "=== PATH ==="
+echo "$PATH"
+echo "=== warmup location ==="
+which warmup
+echo "=== warmup command output ==="
+warmup
+} > $LAB7/task2_path.txt
+```
 
-4. Test from your home directory:
-   ```bash
-   $ cd ~
-   $ warmup
-   ```
+---
 
-5. Save evidence:
-   ```bash
-   $ {
-   > echo "=== PATH ==="
-   > echo "$PATH"
-   > echo "=== warmup location ==="
-   > which warmup
-   > echo "=== warmup command output ==="
-   > warmup
-   > } > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task2_path.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task2_path.txt
-   ```
-
-   > 📸 **Required Screenshot 2:** Save as `images/task2_path.png`.
+📸 **Screenshot 2 starts here:**
+```bash
+cat $LAB7/task2_path.txt
+```
+📸 **Screenshot 2 ends here**
+> Save as: `images/task2_path.png`
 
 ---
 
 ## Task 3 — Doorstep: Dynamic Login Message
 
-**Scenario:** *"When you log in, your shell should greet you and show a small server status snapshot."*
+**Scenario:** *"When you log in, your shell should greet you and show a server status snapshot."*
 
-**Instructions:**
+Add the doorstep message block to `.bashrc`:
 
-1. Open `.bashrc`:
-   ```bash
-   $ nano ~/.bashrc
-   ```
+```bash
+cat >> ~/.bashrc << 'EOF'
 
-2. Add this block near the bottom:
-   ```bash
-   # Lab 7 doorstep message
-   users_online=$(who | wc -l)
-   uptime_info=$(uptime -p)
-   jokes=("Keep calm and check the logs." "There is no place like 127.0.0.1." "Automate the boring stuff.")
-   joke=${jokes[$RANDOM % ${#jokes[@]}]}
+# Lab 7 doorstep message
+users_online=$(who | wc -l)
+uptime_info=$(uptime -p)
+jokes=("Keep calm and check the logs." "There is no place like 127.0.0.1." "Automate the boring stuff.")
+joke=${jokes[$RANDOM % ${#jokes[@]}]}
 
-   echo "========================================"
-   echo "Welcome, $USER"
-   echo "Users currently logged in: $users_online"
-   echo "Server uptime: $uptime_info"
-   echo "Random tech quote: $joke"
-   echo "========================================"
-   ```
+echo "========================================"
+echo "Welcome, $USER"
+echo "Users currently logged in: $users_online"
+echo "Server uptime: $uptime_info"
+echo "Random tech quote: $joke"
+echo "========================================"
+EOF
+```
 
-3. Test it:
-   ```bash
-   $ source ~/.bashrc
-   ```
+Test it and save evidence:
 
-4. Save evidence:
-   ```bash
-   $ source ~/.bashrc > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task3_doorstep.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task3_doorstep.txt
-   ```
+```bash
+source ~/.bashrc > $LAB7/task3_doorstep.txt
+```
 
-   > 📸 **Required Screenshot 3:** Save as `images/task3_doorstep.png`.
+---
+
+📸 **Screenshot 3 starts here:**
+```bash
+cat $LAB7/task3_doorstep.txt
+```
+📸 **Screenshot 3 ends here**
+> Save as: `images/task3_doorstep.png`
 
 ---
 
 ## Task 4 — Secure Mailbox: Write-Only Drop-Box
 
-**Scenario:** *"Classmates should be able to drop files into your inbox, but they should not be able to list or read other people's messages."*
+**Scenario:** *"Classmates should be able to drop files into your inbox, but not list or read others' messages."*
 
-**Instructions:**
+Create the inbox:
 
-1. Create your inbox:
-   ```bash
-   $ mkdir -p ~/public_inbox
-   $ chmod 733 ~/public_inbox
-   ```
+```bash
+mkdir -p ~/public_inbox
+chmod 733 ~/public_inbox
+```
 
-2. Check permissions:
-   ```bash
-   $ ls -ld ~/public_inbox
-   ```
+Save evidence to `task4_inbox.txt`:
 
-3. Ask a classmate to test from their account:
-   ```bash
-   $ ls /home/<YourUsername>/public_inbox
-   $ touch /home/<YourUsername>/public_inbox/test_from_<ClassmateUsername>.txt
-   ```
+```bash
+{
+echo "=== inbox permissions ==="
+ls -ld ~/public_inbox
+echo "=== inbox files as owner ==="
+ls -l ~/public_inbox
+} > $LAB7/task4_inbox.txt
+```
 
-   Expected:
-   - `ls` should fail with `Permission denied`.
-   - `touch` should succeed.
+> 👥 **Ask a classmate** to run this from their account (replace `ken` with your username):
+> ```bash
+> ls /home/ken/public_inbox          # should fail: Permission denied
+> touch /home/ken/public_inbox/test_from_<theirname>.txt   # should succeed
+> ```
 
-4. Save evidence:
-   ```bash
-   $ {
-   > echo "=== inbox permissions ==="
-   > ls -ld ~/public_inbox
-   > echo "=== inbox files as owner ==="
-   > ls -l ~/public_inbox
-   > } > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task4_inbox.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task4_inbox.txt
-   ```
+---
 
-   > 📸 **Required Screenshot 4:** Save as `images/task4_inbox.png`.
+📸 **Screenshot 4 starts here:**
+```bash
+cat $LAB7/task4_inbox.txt
+```
+📸 **Screenshot 4 ends here**
+> Save as: `images/task4_inbox.png`
 
 ---
 
@@ -324,135 +282,133 @@ Your submission files and screenshots must be saved in:
 
 **Scenario:** *"Create data for the server neighborhood. Your classmates' bots will try to find it."*
 
-**Instructions:**
+Create the public outbox:
 
-1. Create a public outbox:
-   ```bash
-   $ mkdir -p ~/public_outbox
-   $ chmod 755 ~/public_outbox
-   ```
+```bash
+mkdir -p ~/public_outbox
+chmod 755 ~/public_outbox
+```
 
-2. Create `~/bin/broadcaster`:
-   ```bash
-   $ nano ~/bin/broadcaster
-   ```
+Create the `broadcaster` script:
 
-3. Add this content:
-   ```bash
-   #!/bin/bash
+```bash
+cat > ~/bin/broadcaster << 'EOF'
+#!/bin/bash
 
-   secrets=("kernel" "mutex" "scheduler" "filesystem" "semaphore")
-   secret=${secrets[$RANDOM % ${#secrets[@]}]}
-   current_time=$(date +"%Y-%m-%d %H:%M:%S")
+secrets=("kernel" "mutex" "scheduler" "filesystem" "semaphore")
+secret=${secrets[$RANDOM % ${#secrets[@]}]}
+current_time=$(date +"%Y-%m-%d %H:%M:%S")
 
-   echo "$secret - $current_time" > "$HOME/public_outbox/secret.txt"
-   chmod 644 "$HOME/public_outbox/secret.txt"
-   echo "Broadcast complete: $HOME/public_outbox/secret.txt"
-   ```
+echo "$secret - $current_time" > "$HOME/public_outbox/secret.txt"
+chmod 644 "$HOME/public_outbox/secret.txt"
+echo "Broadcast complete: $HOME/public_outbox/secret.txt"
+EOF
 
-4. Make it executable and run it:
-   ```bash
-   $ chmod +x ~/bin/broadcaster
-   $ broadcaster
-   $ cat ~/public_outbox/secret.txt
-   ```
+chmod +x ~/bin/broadcaster
+broadcaster
+```
 
-5. Save evidence:
-   ```bash
-   $ {
-   > echo "=== broadcaster script ==="
-   > ls -l ~/bin/broadcaster
-   > echo "=== outbox permissions ==="
-   > ls -ld ~/public_outbox
-   > echo "=== secret.txt ==="
-   > cat ~/public_outbox/secret.txt
-   > } > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task5_broadcaster.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task5_broadcaster.txt
-   ```
+Save evidence to `task5_broadcaster.txt`:
 
-   > 📸 **Required Screenshot 5:** Save as `images/task5_broadcaster.png`.
+```bash
+{
+echo "=== broadcaster script ==="
+ls -l ~/bin/broadcaster
+echo "=== outbox permissions ==="
+ls -ld ~/public_outbox
+echo "=== secret.txt ==="
+cat ~/public_outbox/secret.txt
+} > $LAB7/task5_broadcaster.txt
+```
+
+---
+
+📸 **Screenshot 5 starts here:**
+```bash
+cat $LAB7/task5_broadcaster.txt
+```
+📸 **Screenshot 5 ends here**
+> Save as: `images/task5_broadcaster.png`
 
 ---
 
 ## Task 6 — VIP Guestbook: SUID Helper Program
 
-**Scenario:** *"Classmates should be able to sign your guestbook, but they should not receive direct read/write access to the guestbook file."*
+**Scenario:** *"Classmates should be able to sign your guestbook without getting direct access to the file."*
 
-> Note: Modern Linux ignores SUID on Bash scripts for security reasons. To demonstrate SUID, you will use a compiled C program.
+Create and lock down the guestbook:
 
-**Instructions:**
+```bash
+touch ~/guestbook.txt
+chmod 600 ~/guestbook.txt
+```
 
-1. Create and lock down your guestbook:
-   ```bash
-   $ touch ~/guestbook.txt
-   $ chmod 600 ~/guestbook.txt
-   ```
+Create `sign_book.c` in your lab7 folder:
 
-2. Create `sign_book.c` in your `lab7` folder:
-   ```bash
-   $ cd ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7
-   $ nano sign_book.c
-   ```
+```bash
+cat > $LAB7/sign_book.c << 'EOF'
+#include <stdio.h>
 
-3. Paste this code. Replace `YOUR_USERNAME` with your real Linux username:
-   ```c
-   #include <stdio.h>
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Usage: sign_book 'Your Name'\n");
+        return 1;
+    }
 
-   int main(int argc, char *argv[]) {
-       if (argc != 2) {
-           printf("Usage: sign_book 'Your Name'\n");
-           return 1;
-       }
+    FILE *file = fopen("/home/ken/guestbook.txt", "a");
+    if (file == NULL) {
+        printf("Error opening guestbook.\n");
+        return 1;
+    }
 
-       FILE *file = fopen("/home/YOUR_USERNAME/guestbook.txt", "a");
-       if (file == NULL) {
-           printf("Error opening guestbook.\n");
-           return 1;
-       }
+    fprintf(file, "Visitor signed: %s\n", argv[1]);
+    fclose(file);
+    printf("Successfully signed the VIP guestbook!\n");
+    return 0;
+}
+EOF
+```
 
-       fprintf(file, "Visitor signed: %s\n", argv[1]);
-       fclose(file);
-       printf("Successfully signed the VIP guestbook!\n");
-       return 0;
-   }
-   ```
+Compile it and set SUID:
 
-4. Compile it into `~/bin`:
-   ```bash
-   $ gcc sign_book.c -o ~/bin/sign_book
-   $ chmod 4755 ~/bin/sign_book
-   ```
+```bash
+gcc $LAB7/sign_book.c -o ~/bin/sign_book
+chmod 4755 ~/bin/sign_book
+chmod 711 "$HOME"
+```
 
-5. If classmates cannot reach your `~/bin` directory, allow execute-only traversal of your home directory:
-   ```bash
-   $ chmod 711 "$HOME"
-   ```
+> 👥 **Ask a classmate** to run (replace `ken` with your username):
+> ```bash
+> /home/ken/bin/sign_book "Hello from <theirname>"
+> ```
 
-6. Ask a classmate to run:
-   ```bash
-   $ /home/<YourUsername>/bin/sign_book "Hello from <ClassmateUsername>"
-   ```
+Verify the guestbook:
 
-7. Verify your guestbook:
-   ```bash
-   $ cat ~/guestbook.txt
-   $ ls -l ~/guestbook.txt ~/bin/sign_book
-   ```
+```bash
+cat ~/guestbook.txt
+```
 
-8. Save evidence:
-   ```bash
-   $ {
-   > echo "=== guestbook permissions ==="
-   > ls -l ~/guestbook.txt
-   > echo "=== sign_book permissions ==="
-   > ls -l ~/bin/sign_book
-   > echo "=== guestbook contents ==="
-   > cat ~/guestbook.txt
-   > } > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task6_guestbook.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task6_guestbook.txt
-   ```
+Save evidence to `task6_guestbook.txt`:
 
-   > 📸 **Required Screenshot 6:** Save as `images/task6_guestbook.png`.
+```bash
+{
+echo "=== guestbook permissions ==="
+ls -l ~/guestbook.txt
+echo "=== sign_book permissions ==="
+ls -l ~/bin/sign_book
+echo "=== guestbook contents ==="
+cat ~/guestbook.txt
+} > $LAB7/task6_guestbook.txt
+```
+
+---
+
+📸 **Screenshot 6 starts here:**
+```bash
+cat $LAB7/task6_guestbook.txt
+```
+📸 **Screenshot 6 ends here**
+> Save as: `images/task6_guestbook.png`
 
 ---
 
@@ -460,246 +416,178 @@ Your submission files and screenshots must be saved in:
 
 **Scenario:** *"Write a bot that scans the server neighborhood and collects readable secrets."*
 
-**Instructions:**
+Create the `harvester` script:
 
-1. Create `~/bin/harvester`:
-   ```bash
-   $ nano ~/bin/harvester
-   ```
+```bash
+cat > ~/bin/harvester << 'EOF'
+#!/bin/bash
 
-2. Add this content:
-   ```bash
-   #!/bin/bash
+report="$HOME/harvest_report.txt"
+> "$report"
 
-   report="$HOME/harvest_report.txt"
-   > "$report"
+for user_dir in /home/*; do
+    username=$(basename "$user_dir")
+    target_file="$user_dir/public_outbox/secret.txt"
 
-   for user_dir in /home/*; do
-       username=$(basename "$user_dir")
-       target_file="$user_dir/public_outbox/secret.txt"
+    if [ -f "$target_file" ] && [ -r "$target_file" ]; then
+        secret_data=$(cat "$target_file")
+        echo "${username}'s secret is: $secret_data" >> "$report"
+    fi
+done
 
-       if [ -f "$target_file" ] && [ -r "$target_file" ]; then
-           secret_data=$(cat "$target_file")
-           echo "${username}'s secret is: $secret_data" >> "$report"
-       fi
-   done
+echo "Harvest complete. Report saved to $report"
+EOF
 
-   echo "Harvest complete. Report saved to $report"
-   ```
+chmod +x ~/bin/harvester
+harvester
+```
 
-3. Make it executable and run it:
-   ```bash
-   $ chmod +x ~/bin/harvester
-   $ harvester
-   $ cat ~/harvest_report.txt
-   ```
+Copy the report to lab7:
 
-4. If a classmate's secret is missing, ask them to check:
-   ```bash
-   $ ls -ld ~/public_outbox
-   $ ls -l ~/public_outbox/secret.txt
-   ```
+```bash
+cp ~/harvest_report.txt $LAB7/harvest_report.txt
+```
 
-5. Save evidence:
-   ```bash
-   $ cp ~/harvest_report.txt ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/harvest_report.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/harvest_report.txt
-   ```
+---
 
-   > 📸 **Required Screenshot 7:** Save as `images/task7_harvester.png`.
+📸 **Screenshot 7 starts here:**
+```bash
+cat $LAB7/harvest_report.txt
+```
+📸 **Screenshot 7 ends here**
+> Save as: `images/task7_harvester.png`
 
 ---
 
 ## Task 8 — Mailman Bot: Automated Feedback
 
-**Scenario:** *"Now prove that your harvester worked by dropping automated messages into classmates' secure inboxes."*
+**Scenario:** *"Drop automated messages into classmates' inboxes based on what your harvester found."*
 
-**Instructions:**
+Create the `mailman` script:
 
-1. Create `~/bin/mailman`:
-   ```bash
-   $ nano ~/bin/mailman
-   ```
+```bash
+cat > ~/bin/mailman << 'EOF'
+#!/bin/bash
 
-2. Add this content:
-   ```bash
-   #!/bin/bash
+report="$HOME/harvest_report.txt"
+sent_count=0
 
-   report="$HOME/harvest_report.txt"
-   sent_count=0
+if [ ! -f "$report" ]; then
+    echo "Missing $report. Run harvester first."
+    exit 1
+fi
 
-   if [ ! -f "$report" ]; then
-       echo "Missing $report. Run harvester first."
-       exit 1
-   fi
+while read -r line; do
+    classmate=$(echo "$line" | awk -F"'" '{print $1}')
+    secret=$(echo "$line" | awk -F"is: " '{print $2}' | awk -F" - " '{print $1}')
+    inbox="/home/$classmate/public_inbox"
+    message="$inbox/message_from_$USER.txt"
 
-   while read -r line; do
-       classmate=$(echo "$line" | awk -F"'" '{print $1}')
-       secret=$(echo "$line" | awk -F"is: " '{print $2}' | awk -F" - " '{print $1}')
-       inbox="/home/$classmate/public_inbox"
-       message="$inbox/message_from_$USER.txt"
+    if [ -d "$inbox" ]; then
+        echo "Hello $classmate, I am an automated bot written by $USER. I successfully read your secret word: $secret." > "$message" 2>/dev/null
+        if [ $? -eq 0 ]; then
+            echo "Sent message to $classmate"
+            sent_count=$((sent_count + 1))
+        else
+            echo "Could not write to $classmate's inbox"
+        fi
+    fi
 
-       if [ -d "$inbox" ]; then
-           echo "Hello $classmate, I am an automated bot written by $USER. I successfully read your secret word: $secret." > "$message" 2>/dev/null
-           if [ $? -eq 0 ]; then
-               echo "Sent message to $classmate"
-               sent_count=$((sent_count + 1))
-           else
-               echo "Could not write to $classmate's inbox"
-           fi
-       fi
+    if [ "$sent_count" -ge 3 ]; then
+        break
+    fi
+done < "$report"
 
-       if [ "$sent_count" -ge 3 ]; then
-           break
-       fi
-   done < "$report"
+echo "Messages sent: $sent_count"
+EOF
 
-   echo "Messages sent: $sent_count"
-   ```
+chmod +x ~/bin/mailman
+mailman
+```
 
-3. Make it executable and run it:
-   ```bash
-   $ chmod +x ~/bin/mailman
-   $ mailman
-   ```
+Save evidence to `task8_mailman.txt`:
 
-4. Check your own inbox:
-   ```bash
-   $ ls -l ~/public_inbox
-   $ cat ~/public_inbox/message_from_*.txt 2>/dev/null
-   ```
+```bash
+{
+echo "=== mailman output ==="
+mailman
+echo "=== my inbox ==="
+ls -l ~/public_inbox
+echo "=== messages I received ==="
+cat ~/public_inbox/message_from_*.txt 2>/dev/null
+} > $LAB7/task8_mailman.txt
+```
 
-5. Save evidence:
-   ```bash
-   $ {
-   > echo "=== mailman output ==="
-   > mailman
-   > echo "=== my inbox ==="
-   > ls -l ~/public_inbox
-   > echo "=== messages I received ==="
-   > cat ~/public_inbox/message_from_*.txt 2>/dev/null
-   > } > ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task8_mailman.txt
-   $ cat ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7/task8_mailman.txt
-   ```
+---
 
-   > 📸 **Required Screenshot 8:** Save as `images/task8_mailman.png`.
+📸 **Screenshot 8 starts here:**
+```bash
+cat $LAB7/task8_mailman.txt
+```
+📸 **Screenshot 8 ends here**
+> Save as: `images/task8_mailman.png`
 
 ---
 
 ## Copy Scripts for Submission
 
-Before submitting, copy your scripts into your lab folder:
+Run this after all tasks are done:
 
 ```bash
-$ cd ~/os-se-<YourStudentID>/os-lab-<YourStudentID>/lab7
-$ mkdir -p scripts
-$ cp ~/bin/warmup scripts/
-$ cp ~/bin/broadcaster scripts/
-$ cp ~/bin/harvester scripts/
-$ cp ~/bin/mailman scripts/
-$ cp ~/bin/sign_book scripts/sign_book_binary
+cp ~/bin/warmup $LAB7/scripts/
+cp ~/bin/broadcaster $LAB7/scripts/
+cp ~/bin/harvester $LAB7/scripts/
+cp ~/bin/mailman $LAB7/scripts/
+cp ~/bin/sign_book $LAB7/scripts/sign_book_binary
 ```
 
 ---
 
-## Lab Questions
-
-Answer these in your `README.md`:
-
-1. Why did `warmup` fail before you added execute permission?
-2. What does adding `~/bin` to `PATH` allow you to do?
-3. Why does `chmod 733 public_inbox` allow classmates to drop files but not list the inbox?
-4. Why does Linux ignore SUID on shell scripts, and why did we use a compiled C program instead?
-5. What is the difference between `>` and `>>` in Bash redirection?
-6. How did your `harvester` avoid reading files that were missing or not readable?
-7. What permission problems did you or your classmates need to fix during the lab?
-
----
-
-## Screenshot Checklist
-
-Before submitting, verify you have all required screenshots:
-
-| # | File Name | Task | What It Shows |
-|:-:|-----------|:----:|---------------|
-| 1 | `task1_warmup.png` | Task 1 | `warmup` permissions and successful output |
-| 2 | `task2_path.png` | Task 2 | `PATH`, `which warmup`, and running `warmup` by name |
-| 3 | `task3_doorstep.png` | Task 3 | Dynamic login/status message from `.bashrc` |
-| 4 | `task4_inbox.png` | Task 4 | `public_inbox` permissions and received test file |
-| 5 | `task5_broadcaster.png` | Task 5 | `public_outbox` and generated `secret.txt` |
-| 6 | `task6_guestbook.png` | Task 6 | SUID binary permissions and guestbook contents |
-| 7 | `task7_harvester.png` | Task 7 | `harvest_report.txt` with classmates' secrets |
-| 8 | `task8_mailman.png` | Task 8 | Mailman output and inbox messages |
-
----
-
-## Final Submission
-
-### Required Folder Structure
-
-```
-os-se-<YourStudentID>/
-└── os-lab-<YourStudentID>/
-    └── lab7/
-        ├── README.md
-        ├── task1_warmup.txt
-        ├── task2_path.txt
-        ├── task3_doorstep.txt
-        ├── task4_inbox.txt
-        ├── task5_broadcaster.txt
-        ├── task6_guestbook.txt
-        ├── harvest_report.txt
-        ├── task8_mailman.txt
-        ├── sign_book.c
-        ├── scripts/
-        │   ├── warmup
-        │   ├── broadcaster
-        │   ├── harvester
-        │   ├── mailman
-        │   └── sign_book_binary
-        └── images/
-            ├── task1_warmup.png
-            ├── task2_path.png
-            ├── task3_doorstep.png
-            ├── task4_inbox.png
-            ├── task5_broadcaster.png
-            ├── task6_guestbook.png
-            ├── task7_harvester.png
-            └── task8_mailman.png
-```
-
-### Git Push
+## Verify Your Folder Structure
 
 ```bash
-$ cd ~/os-se-<YourStudentID>
-$ git add .
-$ git commit -m "Lab 7: Bash scripting and server automation"
-$ git push origin main
+ls -1 $LAB7/*.txt $LAB7/sign_book.c
+ls -1 $LAB7/scripts/
+ls -1 $LAB7/images/
+```
+
+Expected output:
+```
+lab7/
+├── README.md
+├── task1_warmup.txt
+├── task2_path.txt
+├── task3_doorstep.txt
+├── task4_inbox.txt
+├── task5_broadcaster.txt
+├── task6_guestbook.txt
+├── harvest_report.txt
+├── task8_mailman.txt
+├── sign_book.c
+├── scripts/
+│   ├── warmup
+│   ├── broadcaster
+│   ├── harvester
+│   ├── mailman
+│   └── sign_book_binary
+└── images/
+    ├── task1_warmup.png
+    ├── task2_path.png
+    ├── task3_doorstep.png
+    ├── task4_inbox.png
+    ├── task5_broadcaster.png
+    ├── task6_guestbook.png
+    ├── task7_harvester.png
+    └── task8_mailman.png
 ```
 
 ---
 
-## Grading Criteria
+## Git Push
 
-| Criteria | Points | Description |
-|----------|--------|-------------|
-| **Tasks 1–2: Script execution and PATH** | 15 | `warmup` works, permissions are correct, and `PATH` is configured. |
-| **Task 3: Doorstep message** | 10 | `.bashrc` shows dynamic username, logged-in users, uptime, and random quote. |
-| **Task 4: Secure mailbox** | 10 | `public_inbox` uses correct write-only drop-box permissions and is tested with a classmate. |
-| **Task 5: Broadcaster** | 10 | `broadcaster` creates readable `secret.txt` with a secret and timestamp. |
-| **Task 6: VIP guestbook** | 15 | SUID C helper is compiled, permissioned, tested, and documented. |
-| **Task 7: Harvester** | 15 | Script loops through `/home`, checks readable secrets, and builds `harvest_report.txt`. |
-| **Task 8: Mailman** | 10 | Script reads the harvest report and sends automated messages to at least three classmates. |
-| **README, screenshots, and answers** | 15 | README is complete, screenshots are embedded, outputs are present, and questions are answered clearly. |
-| **Total** | **100** | |
-
----
-
-## Tips
-
-- Do not add `.sh` extensions to the required command scripts.
-- If a command works with `./script` but not by name, check `PATH`.
-- If classmates cannot write into your inbox, check `chmod 733 ~/public_inbox`.
-- If classmates cannot read your outbox secret, check `chmod 755 ~/public_outbox` and `chmod 644 ~/public_outbox/secret.txt`.
-- If SUID does not work, check that `~/bin/sign_book` is owned by you and has `-rwsr-xr-x` style permissions.
-- If your harvester finds no secrets, ask classmates whether they ran `broadcaster`.
+```bash
+cd ~/Desktop/github/os-se-p20240034
+git add .
+git commit -m "Lab 7: Bash scripting and server automation"
+git push origin main
+```

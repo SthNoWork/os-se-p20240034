@@ -1,0 +1,1 @@
+-bash: line 1: /home/ken/Desktop/github/os-se-p20240034/os-lab-p20240034/lab6/security_lab/whoami_suid: Permission denied

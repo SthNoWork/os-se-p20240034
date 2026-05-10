@@ -1,0 +1,4 @@
+dev_alice:x:1001:1001::/home/dev_alice:/bin/bash
+dev_bob:x:1002:1002::/home/dev_bob:/bin/bash
+drwxr-x---  2 dev_alice dev_alice 4096 May 28 15:52 dev_alice
+drwxr-x---  2 dev_bob   dev_bob   4096 May 28 15:52 dev_bob
