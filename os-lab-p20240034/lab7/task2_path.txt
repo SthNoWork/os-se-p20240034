@@ -1,0 +1,7 @@
+=== PATH ===
+/home/ken/bin:/opt/ros/humble/bin:/home/ken/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
+=== warmup location ===
+/home/ken/bin/warmup
+=== warmup command output ===
+Hello from my first script! My current directory is:
+/home/ken/Desktop/github/os-se-p20240034/os-lab-p20240034/lab7

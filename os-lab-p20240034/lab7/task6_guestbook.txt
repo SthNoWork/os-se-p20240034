@@ -1,0 +1,6 @@
+=== guestbook permissions ===
+-rw------- 1 ken ken 37 Jun  9 14:09 /home/ken/guestbook.txt
+=== sign_book permissions ===
+-rwsr-xr-x 1 ken ken 16096 Jun  9 14:09 /home/ken/bin/sign_book
+=== guestbook contents ===
+Visitor signed: Hello from classmate

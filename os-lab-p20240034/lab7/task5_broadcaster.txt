@@ -1,0 +1,6 @@
+=== broadcaster script ===
+-rwxrwxr-x 1 ken ken 329 Jun  9 14:08 /home/ken/bin/broadcaster
+=== outbox permissions ===
+drwxr-xr-x 2 ken ken 4096 Jun  9 14:08 /home/ken/public_outbox
+=== secret.txt ===
+kernel - 2026-06-09 14:08:35

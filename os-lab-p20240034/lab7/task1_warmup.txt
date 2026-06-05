@@ -1,0 +1,5 @@
+=== warmup permissions ===
+-rwxrwxr-x 1 ken ken 76 Jun  9 13:59 /home/ken/bin/warmup
+=== warmup output ===
+Hello from my first script! My current directory is:
+/home/ken/Desktop/github/os-se-p20240034/os-lab-p20240034/lab7

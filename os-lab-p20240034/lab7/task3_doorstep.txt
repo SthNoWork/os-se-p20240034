@@ -1,0 +1,6 @@
+========================================
+Welcome, ken
+Users currently logged in: 1
+Server uptime: up 50 minutes
+Random tech quote: Keep calm and check the logs.
+========================================

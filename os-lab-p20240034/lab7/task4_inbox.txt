@@ -1,0 +1,4 @@
+=== inbox permissions ===
+drwx-wx-wx 2 ken ken 4096 Jun  9 14:07 /home/ken/public_inbox
+=== inbox files as owner ===
+total 0

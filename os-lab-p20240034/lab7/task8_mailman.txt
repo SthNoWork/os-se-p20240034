@@ -1,0 +1,9 @@
+=== mailman output ===
+Sent message to ken
+Messages sent: 1
+=== my inbox ===
+total 4
+-rw-rw-r-- 1 ken ken 95 Jun  9 14:13 message_from_ken.txt
+-rw-rw-r-- 1 ken ken  0 Jun  9 14:07 test_from_classmate.txt
+=== messages I received ===
+Hello ken, I am an automated bot written by ken. I successfully read your secret word: kernel.
