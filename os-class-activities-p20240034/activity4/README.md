@@ -2,10 +2,10 @@
 
 - **Student Name:** LOR Hengrith
 - **Student ID:** p20240034
-- **Partner Name:** [Partner Name]
-- **Partner Student ID:** [Partner ID]
-- **Server Machine Owner:** [Your Name or Partner Name]
-- **Server IP Address:** [e.g. 192.168.1.25]
+- **Partner Name:** Theng Vanheng
+- **Partner Student ID:** p20240035
+- **Server Machine Owner:** Theng Vanheng
+- **Server IP Address:** 172.18.18.249
 
 ---
 
