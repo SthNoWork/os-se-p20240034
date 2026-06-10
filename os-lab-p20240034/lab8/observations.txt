@@ -1,0 +1,13 @@
+Run 1 final inventory: -2
+Run 2 final inventory: 74
+Run 3 final inventory: -2
+Run 4 final inventory: 78
+Run 5 final inventory: -2
+
+Explanation:
+Multiple bots read the inventory at the same time before any of them writes back.
+They all see the same old value, calculate the same result, and overwrite each other.
+This causes two problems: some bots read an empty file (causing the integer expression error),
+and others read a stale value and write back a result that ignores concurrent updates.
+The inventory ends up inconsistent — sometimes even going negative (-2).
+This is a TOC-TOU (Time-of-Check to Time-of-Use) race condition caused by OS process scheduling.
