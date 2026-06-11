@@ -1,0 +1,7 @@
+=== drop zone permissions ===
+drwxrwxrwt 2 ken ken 4096 Jun 11 09:31 /home/ken/vendor_reports
+=== drop zone files ===
+total 4
+-rw-rw-r-- 1 ken ken 27 Jun 11 09:31 my_rules.txt
+=== partner deletion result ===
+Permission denied — sticky bit prevents deletion of another user's file.
