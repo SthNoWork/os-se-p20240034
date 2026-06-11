@@ -1,0 +1,11 @@
+=== working folder ===
+/home/ken/os-lab-deadlock
+=== vault directories ===
+drwxrwxr-x 2 ken ken 4096 Jun  9 14:33 /home/ken/os-lab-deadlock/vault_alpha
+drwxrwxr-x 2 ken ken 4096 Jun  9 14:33 /home/ken/os-lab-deadlock/vault_beta
+=== vault lock files ===
+-rw-rw-r-- 1 ken ken 0 Jun 11 09:50 /home/ken/os-lab-deadlock/vault_alpha/vault.lock
+-rw-rw-r-- 1 ken ken 0 Jun 11 09:50 /home/ken/os-lab-deadlock/vault_beta/vault.lock
+=== vault marker files ===
+Vault Alpha local resource for p20240034
+Vault Beta local resource for p20240034

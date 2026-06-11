@@ -1,0 +1,16 @@
+=== teardown script ===
+-rwxrwxr-x 1 ken ken 330 Jun 11 10:00 /home/ken/bin/teardown
+=== process check ===
+No sync processes found.
+=== final working folder ===
+/home/ken/os-lab-deadlock
+/home/ken/os-lab-deadlock/public_dr_alpha
+/home/ken/os-lab-deadlock/public_dr_alpha/vault.lock
+/home/ken/os-lab-deadlock/public_dr_beta
+/home/ken/os-lab-deadlock/public_dr_beta/vault.lock
+/home/ken/os-lab-deadlock/vault_alpha
+/home/ken/os-lab-deadlock/vault_alpha/README.txt
+/home/ken/os-lab-deadlock/vault_alpha/vault.lock
+/home/ken/os-lab-deadlock/vault_beta
+/home/ken/os-lab-deadlock/vault_beta/README.txt
+/home/ken/os-lab-deadlock/vault_beta/vault.lock

@@ -1,0 +1,16 @@
+=== public DR permissions ===
+drwx--x--x 52 ken ken 4096 Jun 11 09:54 /home/ken
+drwxrwxr-x  6 ken ken 4096 Jun 11 09:54 /home/ken/os-lab-deadlock
+drwxr-xr-x  2 ken ken 4096 Jun 11 09:54 /home/ken/os-lab-deadlock/public_dr_alpha
+drwxr-xr-x  2 ken ken 4096 Jun 11 09:54 /home/ken/os-lab-deadlock/public_dr_beta
+/home/ken/os-lab-deadlock/public_dr_alpha:
+total 0
+-rw-rw-rw- 1 ken ken 0 Jun 11 09:55 vault.lock
+
+/home/ken/os-lab-deadlock/public_dr_beta:
+total 0
+-rw-rw-rw- 1 ken ken 0 Jun 11 09:55 vault.lock
+=== running cross sync processes ===
+=== partner role ===
+Partner username: ken (solo simulation)
+My role: Player A

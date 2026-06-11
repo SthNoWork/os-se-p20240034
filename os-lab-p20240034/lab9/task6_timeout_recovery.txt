@@ -1,0 +1,5 @@
+=== sync_timeout permissions ===
+-rwxrwxr-x 1 ken ken 579 Jun 11 09:58 /home/ken/bin/sync_timeout
+=== timeout evidence ===
+sync_timeout printed ERROR and exited with nonzero status after 5 seconds.
+=== process check after stopping old script ===
