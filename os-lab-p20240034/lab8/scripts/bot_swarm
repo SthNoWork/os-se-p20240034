@@ -1,0 +1,6 @@
+#!/bin/bash
+target="/home/ken/public_api/buy_widget"
+for i in {1..50}; do
+    "$target" "RedTeam_ken_$i" 2 &
+done
+wait

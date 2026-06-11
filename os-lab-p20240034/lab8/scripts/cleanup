@@ -1,0 +1,15 @@
+#!/bin/bash
+script_name="$(basename "$0")"
+
+for file in *; do
+    [ -f "$file" ] || continue
+    [ "$file" = "$script_name" ] && continue
+
+    ext="${file##*.}"
+
+    [ "$ext" = "$file" ] && continue
+
+    mkdir -p "$ext"
+    mv "$file" "$ext/"
+    echo "Moved $file -> $ext/"
+done

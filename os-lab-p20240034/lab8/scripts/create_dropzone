@@ -1,0 +1,7 @@
+#!/bin/bash
+read -r -p "Drop zone folder name: " folder
+mkdir -p "$HOME/$folder"
+chmod o+wx "$HOME/$folder"
+chmod +t "$HOME/$folder"
+echo "Drop zone created:"
+ls -ld "$HOME/$folder"
