@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+
+STUDENT_ID="p20240034"
+SOURCE="$HOME/os-lab-automation/project"
+BACKUP_DIR="$HOME/os-lab-automation/backups"
+LOG="$HOME/os-lab-automation/logs/backup_project.log"
+KEEP=3
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$STUDENT_ID] $1" >> "$LOG"
+}
+
+TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
+ARCHIVE="$BACKUP_DIR/project_${TIMESTAMP}.tar.gz"
+
+log "=== backup_project started ==="
+log "Creating archive: $ARCHIVE"
+
+tar -czf "$ARCHIVE" -C "$HOME/os-lab-automation" project
+log "Archive created successfully"
+
+COUNT=$(ls -t "$BACKUP_DIR"/project_*.tar.gz 2>/dev/null | wc -l)
+log "Total archives: $COUNT — keeping newest $KEEP"
+
+if [ "$COUNT" -gt "$KEEP" ]; then
+    ls -t "$BACKUP_DIR"/project_*.tar.gz | tail -n +$((KEEP + 1)) | while read -r OLD; do
+        log "Deleting old archive: $OLD"
+        rm "$OLD"
+    done
+fi
+
+log "Retained archives:"
+ls -t "$BACKUP_DIR"/project_*.tar.gz >> "$LOG"
+log "=== backup_project finished ==="

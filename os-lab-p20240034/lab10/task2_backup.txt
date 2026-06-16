@@ -1,0 +1,40 @@
+=== retained archives (should be 3) ===
+-rw-rw-r-- 1 ken ken 321 Jun 11 20:45 /home/ken/os-lab-automation/backups/project_20260611_204516.tar.gz
+-rw-rw-r-- 1 ken ken 321 Jun 11 20:45 /home/ken/os-lab-automation/backups/project_20260611_204518.tar.gz
+-rw-rw-r-- 1 ken ken 321 Jun 11 20:45 /home/ken/os-lab-automation/backups/project_20260611_204520.tar.gz
+
+=== backup log ===
+[2026-06-11 20:45:14] [p20240034] === backup_project started ===
+[2026-06-11 20:45:14] [p20240034] Creating archive: /home/ken/os-lab-automation/backups/project_20260611_204514.tar.gz
+[2026-06-11 20:45:14] [p20240034] Archive created successfully
+[2026-06-11 20:45:14] [p20240034] Total archives: 1 — keeping newest 3
+[2026-06-11 20:45:14] [p20240034] Retained archives:
+/home/ken/os-lab-automation/backups/project_20260611_204514.tar.gz
+[2026-06-11 20:45:14] [p20240034] === backup_project finished ===
+[2026-06-11 20:45:16] [p20240034] === backup_project started ===
+[2026-06-11 20:45:16] [p20240034] Creating archive: /home/ken/os-lab-automation/backups/project_20260611_204516.tar.gz
+[2026-06-11 20:45:16] [p20240034] Archive created successfully
+[2026-06-11 20:45:16] [p20240034] Total archives: 2 — keeping newest 3
+[2026-06-11 20:45:16] [p20240034] Retained archives:
+/home/ken/os-lab-automation/backups/project_20260611_204516.tar.gz
+/home/ken/os-lab-automation/backups/project_20260611_204514.tar.gz
+[2026-06-11 20:45:16] [p20240034] === backup_project finished ===
+[2026-06-11 20:45:18] [p20240034] === backup_project started ===
+[2026-06-11 20:45:18] [p20240034] Creating archive: /home/ken/os-lab-automation/backups/project_20260611_204518.tar.gz
+[2026-06-11 20:45:18] [p20240034] Archive created successfully
+[2026-06-11 20:45:18] [p20240034] Total archives: 3 — keeping newest 3
+[2026-06-11 20:45:18] [p20240034] Retained archives:
+/home/ken/os-lab-automation/backups/project_20260611_204518.tar.gz
+/home/ken/os-lab-automation/backups/project_20260611_204516.tar.gz
+/home/ken/os-lab-automation/backups/project_20260611_204514.tar.gz
+[2026-06-11 20:45:18] [p20240034] === backup_project finished ===
+[2026-06-11 20:45:20] [p20240034] === backup_project started ===
+[2026-06-11 20:45:20] [p20240034] Creating archive: /home/ken/os-lab-automation/backups/project_20260611_204520.tar.gz
+[2026-06-11 20:45:20] [p20240034] Archive created successfully
+[2026-06-11 20:45:20] [p20240034] Total archives: 4 — keeping newest 3
+[2026-06-11 20:45:20] [p20240034] Deleting old archive: /home/ken/os-lab-automation/backups/project_20260611_204514.tar.gz
+[2026-06-11 20:45:20] [p20240034] Retained archives:
+/home/ken/os-lab-automation/backups/project_20260611_204520.tar.gz
+/home/ken/os-lab-automation/backups/project_20260611_204518.tar.gz
+/home/ken/os-lab-automation/backups/project_20260611_204516.tar.gz
+[2026-06-11 20:45:20] [p20240034] === backup_project finished ===

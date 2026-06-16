@@ -1,0 +1,37 @@
+#!/bin/bash
+set -euo pipefail
+
+LOG="$HOME/os-lab-automation/logs/automation_demo.log"
+STUDENT_ID="p20240034"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$STUDENT_ID] $1" >> "$LOG"
+}
+
+check_status() {
+    if [ $? -eq 0 ]; then
+        log "SUCCESS: $1"
+    else
+        log "FAILED: $1"
+        exit 1
+    fi
+}
+
+log "=== automation_demo started ==="
+log "Hostname: $(hostname)"
+log "User: $(whoami)"
+log "Working directory: $(pwd)"
+
+log "Running task 1: create temp file"
+touch /tmp/quantum_test_$$
+check_status "create temp file"
+
+log "Running task 2: write to temp file"
+echo "QuantumTech automation test" > /tmp/quantum_test_$$
+check_status "write to temp file"
+
+log "Running task 3: remove temp file"
+rm /tmp/quantum_test_$$
+check_status "remove temp file"
+
+log "=== automation_demo finished successfully ==="

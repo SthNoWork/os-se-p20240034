@@ -1,0 +1,49 @@
+#!/bin/bash
+set -euo pipefail
+
+STUDENT_ID="p20240034"
+LOG="$HOME/os-lab-automation/logs/cron_maintenance.log"
+HEALTH="$HOME/os-lab-automation/logs/health_report.log"
+ARCHIVE_DIR="$HOME/os-lab-automation/logs/archive"
+DISK_THRESHOLD=90
+
+mkdir -p "$ARCHIVE_DIR"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$STUDENT_ID] $1" >> "$LOG"
+}
+
+log "=== maintenance started ==="
+
+log "Rotating old logs..."
+for f in "$HOME/os-lab-automation/logs"/*.log; do
+    SIZE=$(wc -c < "$f")
+    if [ "$SIZE" -gt 10240 ]; then
+        ARCHIVE="$ARCHIVE_DIR/$(basename $f).$(date '+%Y%m%d_%H%M%S')"
+        mv "$f" "$ARCHIVE"
+        touch "$f"
+        log "Rotated: $f → $ARCHIVE"
+    fi
+done
+
+DISK=$(df -h "$HOME" | awk 'NR==2 {print $5}' | tr -d '%')
+UPTIME=$(uptime -p)
+FREE_MEM=$(free -h | awk 'NR==2 {print $4}')
+
+{
+echo "=== QuantumTech Health Report ==="
+echo "Timestamp : $(date '+%Y-%m-%d %H:%M:%S')"
+echo "Student ID: $STUDENT_ID"
+echo "Uptime    : $UPTIME"
+echo "Disk Use  : ${DISK}%"
+echo "Free Mem  : $FREE_MEM"
+if [ "$DISK" -gt "$DISK_THRESHOLD" ]; then
+    echo "ALERT: Disk usage ${DISK}% exceeds threshold ${DISK_THRESHOLD}%"
+else
+    echo "Disk OK   : ${DISK}% is below threshold ${DISK_THRESHOLD}%"
+fi
+echo "================================="
+} >> "$HEALTH"
+
+log "Health report written"
+log "=== maintenance finished ==="

@@ -1,0 +1,1 @@
+cat ~/os-lab-automation/cron_tasks/session_job.out

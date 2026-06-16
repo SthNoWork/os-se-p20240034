@@ -1,0 +1,6 @@
+=== session job output ===
+[2026-06-16 14:45:01] [p20240034] SESSION_JOB_OK
+
+=== crontab -l ===
+45 14 16 6 * /home/se-lor-hengrith/bin/lab_session_job
+30 14 22 6 * /home/se-lor-hengrith/bin/deadline_job

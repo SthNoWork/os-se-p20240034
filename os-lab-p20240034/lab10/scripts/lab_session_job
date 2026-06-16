@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [p20240034] SESSION_JOB_OK" >> "$HOME/os-lab-automation/cron_tasks/session_job.out"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [p20240034] SESSION_JOB_OK" >> "$HOME/os-lab-automation/logs/cron_session_job.log"

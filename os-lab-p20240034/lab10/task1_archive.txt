@@ -1,0 +1,28 @@
+=== tar vs tar.gz size ===
+-rw-rw-r-- 1 ken ken 10K Jun 11 20:43 /home/ken/os-lab-automation/backups/project.tar
+-rw-rw-r-- 1 ken ken 321 Jun 11 20:43 /home/ken/os-lab-automation/backups/project.tar.gz
+
+=== contents of tar.gz ===
+project/
+project/docs/
+project/docs/notes.txt
+project/docs/changelog.txt
+project/README.md
+project/src/
+project/src/widget.py
+
+=== extracted files ===
+/tmp/quantum_extract:
+project
+
+/tmp/quantum_extract/project:
+docs
+README.md
+src
+
+/tmp/quantum_extract/project/docs:
+changelog.txt
+notes.txt
+
+/tmp/quantum_extract/project/src:
+widget.py

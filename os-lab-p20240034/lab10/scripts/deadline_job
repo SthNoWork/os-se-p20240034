@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [p20240034] DEADLINE_JOB_OK" >> "$HOME/os-lab-automation/cron_tasks/deadline_job.out"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [p20240034] DEADLINE_JOB_OK" >> "$HOME/os-lab-automation/logs/cron_deadline_job.log"

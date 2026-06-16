@@ -1,0 +1,12 @@
+=== automation_demo run ===
+[2026-06-11 20:40:38] [p20240034] === automation_demo started ===
+[2026-06-11 20:40:38] [p20240034] Hostname: ken-Vivobook-ASUSLaptop-X1502VA-X1502VA
+[2026-06-11 20:40:38] [p20240034] User: ken
+[2026-06-11 20:40:38] [p20240034] Working directory: /home/ken/Desktop/github/os-se-p20240034/os-lab-p20240034/lab10
+[2026-06-11 20:40:38] [p20240034] Running task 1: create temp file
+[2026-06-11 20:40:38] [p20240034] SUCCESS: create temp file
+[2026-06-11 20:40:38] [p20240034] Running task 2: write to temp file
+[2026-06-11 20:40:38] [p20240034] SUCCESS: write to temp file
+[2026-06-11 20:40:38] [p20240034] Running task 3: remove temp file
+[2026-06-11 20:40:38] [p20240034] SUCCESS: remove temp file
+[2026-06-11 20:40:38] [p20240034] === automation_demo finished successfully ===
