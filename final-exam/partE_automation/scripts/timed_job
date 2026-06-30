@@ -1,10 +1,19 @@
 #!/bin/bash
 
 output_file="$1"
+TOKEN="IDEMPMARK"
 
 if [ -z "$output_file" ]; then
     echo "Usage: timed_job <output_file>"
     exit 1
 fi
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') | timed_job fired | PID=$$" >> "$output_file"
+today=$(date '+%Y-%m-%d')
+marker_line="${TOKEN}:${today}"
+
+if [ -f "$output_file" ] && grep -q "$marker_line" "$output_file"; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') | timed_job SKIPPED (idempotent guard - $marker_line already present) | PID=$$" >> "$output_file"
+    exit 0
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') | timed_job fired | $marker_line | PID=$$" >> "$output_file"

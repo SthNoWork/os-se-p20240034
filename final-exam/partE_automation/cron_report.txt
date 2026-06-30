@@ -1,0 +1,84 @@
+=== crontab -l ===
+45 14 16 6 * /home/se-lor-hengrith/bin/lab_session_job
+30 14 22 6 * /home/se-lor-hengrith/bin/deadline_job
+* * * * * /home/se-lor-hengrith/bin/timed_job /home/se-lor-hengrith/os-se-p20240034/final-exam/partE_automation/logs/cron_recurring.log
+35 14 30 6 * /home/se-lor-hengrith/bin/timed_job /home/se-lor-hengrith/os-se-p20240034/final-exam/partE_automation/logs/cron_oneshot.log
+*/5 * * * * /home/se-lor-hengrith/bin/backup_exam >> /home/se-lor-hengrith/os-se-p20240034/final-exam/partE_automation/logs/backup_exam.log 2>&1
+0 16 30 6 * /home/se-lor-hengrith/bin/backup_exam >> /home/se-lor-hengrith/os-se-p20240034/final-exam/partE_automation/logs/backup_exam.log 2>&1
+
+=== cron_recurring.log ===
+2026-06-30 14:14:01 | timed_job fired | PID=1536700
+2026-06-30 14:15:01 | timed_job fired | PID=1539440
+2026-06-30 14:16:01 | timed_job fired | PID=1542167
+2026-06-30 14:17:01 | timed_job fired | PID=1543527
+2026-06-30 14:18:01 | timed_job fired | PID=1551100
+2026-06-30 14:19:01 | timed_job fired | PID=1553219
+2026-06-30 14:20:01 | timed_job fired | PID=1560088
+2026-06-30 14:21:01 | timed_job fired | PID=1562278
+2026-06-30 14:22:01 | timed_job fired | PID=1564361
+2026-06-30 14:23:01 | timed_job fired | PID=1568424
+2026-06-30 14:24:01 | timed_job fired | PID=1570427
+2026-06-30 14:25:01 | timed_job fired | PID=1573539
+2026-06-30 14:26:01 | timed_job fired | PID=1576063
+2026-06-30 14:27:01 | timed_job fired | PID=1577993
+2026-06-30 14:28:01 | timed_job fired | PID=1580639
+2026-06-30 14:29:01 | timed_job fired | PID=1582061
+2026-06-30 14:30:01 | timed_job fired | PID=1583608
+2026-06-30 14:31:01 | timed_job fired | PID=1585385
+2026-06-30 14:32:01 | timed_job fired | PID=1587757
+2026-06-30 14:33:01 | timed_job fired | PID=1589319
+2026-06-30 14:34:01 | timed_job fired | PID=1590618
+2026-06-30 14:35:01 | timed_job fired | PID=1592468
+2026-06-30 14:36:01 | timed_job fired | PID=1594724
+2026-06-30 14:37:01 | timed_job fired | PID=1598735
+2026-06-30 14:38:01 | timed_job fired | PID=1600031
+2026-06-30 14:39:01 | timed_job fired | PID=1601903
+2026-06-30 14:40:01 | timed_job fired | PID=1605410
+2026-06-30 14:41:01 | timed_job fired | PID=1608335
+2026-06-30 14:42:01 | timed_job fired | PID=1610006
+2026-06-30 14:43:01 | timed_job fired | PID=1611626
+2026-06-30 14:44:01 | timed_job fired | PID=1614448
+2026-06-30 14:45:01 | timed_job fired | PID=1617361
+2026-06-30 14:46:01 | timed_job fired | PID=1619422
+2026-06-30 14:47:01 | timed_job fired | PID=1622883
+2026-06-30 14:48:01 | timed_job fired | PID=1628563
+2026-06-30 14:49:01 | timed_job fired | PID=1640586
+2026-06-30 14:50:01 | timed_job fired | PID=1643435
+2026-06-30 14:51:01 | timed_job fired | PID=1647223
+2026-06-30 14:52:01 | timed_job fired | IDEMPMARK:2026-06-30 | PID=1650761
+2026-06-30 14:53:01 | timed_job SKIPPED (idempotent guard - IDEMPMARK:2026-06-30 already present) | PID=1653226
+2026-06-30 14:54:01 | timed_job SKIPPED (idempotent guard - IDEMPMARK:2026-06-30 already present) | PID=1654995
+2026-06-30 14:55:01 | timed_job SKIPPED (idempotent guard - IDEMPMARK:2026-06-30 already present) | PID=1656867
+2026-06-30 14:56:01 | timed_job SKIPPED (idempotent guard - IDEMPMARK:2026-06-30 already present) | PID=1658283
+
+=== cron_oneshot.log ===
+2026-06-30 14:35:01 | timed_job fired | PID=1592385
+
+=== backup_exam.log ===
+2026-06-30 14:20:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_142001.tar.gz
+2026-06-30 14:25:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_142501.tar.gz
+2026-06-30 14:30:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_143001.tar.gz
+2026-06-30 14:35:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_143501.tar.gz
+2026-06-30 14:40:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_144001.tar.gz
+2026-06-30 14:45:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_144501.tar.gz
+2026-06-30 14:50:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_145001.tar.gz
+tar: final-exam/partC_scripting/sample_data/dir1/locked.txt: Cannot open: Permission denied
+tar: Exiting with failure status due to previous errors
+2026-06-30 14:55:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_145501.tar.gz
+
+=== ~/exam-backups/ listing ===
+total 10808
+drwxrwxr-x  2 se-lor-hengrith se-lor-hengrith    4096 Jun 30 14:55 .
+drwxr-x--x 18 se-lor-hengrith se-lor-hengrith    4096 Jun 30 14:29 ..
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  787673 Jun 30 14:14 final-exam-20260630_141405.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  787673 Jun 30 14:14 final-exam-20260630_141421.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  787673 Jun 30 14:14 final-exam-20260630_141431.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  787724 Jun 30 14:15 final-exam-20260630_141503.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  881938 Jun 30 14:20 final-exam-20260630_142001.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  882142 Jun 30 14:25 final-exam-20260630_142501.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  883597 Jun 30 14:30 final-exam-20260630_143001.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  884146 Jun 30 14:35 final-exam-20260630_143501.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  884323 Jun 30 14:40 final-exam-20260630_144001.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith  915042 Jun 30 14:45 final-exam-20260630_144501.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith 1248129 Jun 30 14:50 final-exam-20260630_145001.tar.gz
+-rw-rw-r--  1 se-lor-hengrith se-lor-hengrith 1305119 Jun 30 14:55 final-exam-20260630_145501.tar.gz

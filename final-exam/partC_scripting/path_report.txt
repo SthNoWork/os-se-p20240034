@@ -1,5 +1,2 @@
-=== $PATH ===
-/home/se-lor-hengrith/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/se-lor-hengrith/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/se-lor-hengrith/.vscode-server/cli/servers/Stable-1b50d58d73426c9171299ec4037d01365d995b78/server/bin/remote-cli:/home/se-lor-hengrith/bin:/home/se-lor-hengrith/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-
-=== which greeter ===
+/home/se-lor-hengrith/bin:/home/se-lor-hengrith/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/se-lor-hengrith/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/se-lor-hengrith/.vscode-server/cli/servers/Stable-1b50d58d73426c9171299ec4037d01365d995b78/server/bin/remote-cli:/home/se-lor-hengrith/bin:/home/se-lor-hengrith/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 /home/se-lor-hengrith/bin/greeter

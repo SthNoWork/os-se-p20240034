@@ -1,21 +1,9 @@
 --- /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir1/fileA.txt ---
 Data from dir1 file A
 
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir1/fileB.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir1/fileC.txt
-SKIP (unreadable): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir1/locked.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir1/missing.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir2/fileA.txt
 --- /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir2/fileB.txt ---
 Data from dir2 file B
 
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir2/fileC.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir2/locked.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir2/missing.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir3/fileA.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir3/fileB.txt
 --- /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir3/fileC.txt ---
 Data from dir3 file C
 
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir3/locked.txt
-SKIP (missing): /home/se-lor-hengrith/os-se-p20240034/final-exam/partC_scripting/sample_data/dir3/missing.txt

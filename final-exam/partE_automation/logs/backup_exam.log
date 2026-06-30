@@ -1,2 +1,10 @@
 2026-06-30 14:20:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_142001.tar.gz
 2026-06-30 14:25:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_142501.tar.gz
+2026-06-30 14:30:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_143001.tar.gz
+2026-06-30 14:35:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_143501.tar.gz
+2026-06-30 14:40:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_144001.tar.gz
+2026-06-30 14:45:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_144501.tar.gz
+2026-06-30 14:50:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_145001.tar.gz
+tar: final-exam/partC_scripting/sample_data/dir1/locked.txt: Cannot open: Permission denied
+tar: Exiting with failure status due to previous errors
+2026-06-30 14:55:01 | backup_exam created: /home/se-lor-hengrith/exam-backups/final-exam-20260630_145501.tar.gz

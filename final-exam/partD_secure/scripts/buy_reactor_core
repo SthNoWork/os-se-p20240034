@@ -5,6 +5,7 @@ STOCK_FILE="$BASE_DIR/stock.txt"
 SALES_LOG="$BASE_DIR/sales.log"
 LOCK_FILE="$BASE_DIR/.stock.lock"
 STUDENT_ID="p20240034"
+MAX_PER_BUYER=5
 
 buyer="$1"
 qty="$2"
@@ -16,6 +17,11 @@ fi
 
 if ! [[ "$qty" =~ ^[0-9]+$ ]] || [ "$qty" -le 0 ]; then
     echo "Error: quantity must be a positive integer"
+    exit 1
+fi
+
+if [ "$qty" -gt "$MAX_PER_BUYER" ]; then
+    echo "Error: order of $qty exceeds per-buyer cap of $MAX_PER_BUYER"
     exit 1
 fi
 
