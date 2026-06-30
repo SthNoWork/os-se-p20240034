@@ -1,0 +1,15 @@
+se-mi-s+ 1481754 1452884 1481754  0    1 13:47 pts/32   00:00:00 nano thread_demo.c
+se-chea+ 1483379 1444198 1483379  0    5 13:48 pts/8    00:00:00 ./partA_threads/thread_demo
+se-chea+ 1483379 1444198 1483380  0    5 13:48 pts/8    00:00:00 ./partA_threads/thread_demo
+se-chea+ 1483379 1444198 1483381  0    5 13:48 pts/8    00:00:00 ./partA_threads/thread_demo
+se-chea+ 1483379 1444198 1483382  0    5 13:48 pts/8    00:00:00 ./partA_threads/thread_demo
+se-chea+ 1483379 1444198 1483383  0    5 13:48 pts/8    00:00:00 ./partA_threads/thread_demo
+se-chum+ 1483408 1467843 1483408  0    4 13:48 pts/37   00:00:00 ./thread_demo
+se-chum+ 1483408 1467843 1483409  0    4 13:48 pts/37   00:00:00 ./thread_demo
+se-chum+ 1483408 1467843 1483410  0    4 13:48 pts/37   00:00:00 ./thread_demo
+se-chum+ 1483408 1467843 1483411  0    4 13:48 pts/37   00:00:00 ./thread_demo
+se-lor-+ 1483734 1481245 1483734  0    4 13:48 pts/44   00:00:00 ./thread_demo
+se-lor-+ 1483734 1481245 1483735  0    4 13:48 pts/44   00:00:00 ./thread_demo
+se-lor-+ 1483734 1481245 1483736  0    4 13:48 pts/44   00:00:00 ./thread_demo
+se-lor-+ 1483734 1481245 1483737  0    4 13:48 pts/44   00:00:00 ./thread_demo
+se-lor-+ 1483780 1481005 1483780  0    1 13:48 pts/43   00:00:00 grep --color=auto thread_demo

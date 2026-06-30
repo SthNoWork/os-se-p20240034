@@ -1,0 +1,31 @@
+#!/bin/bash
+
+base_dir="$HOME/os-se-p20240034/final-exam/partC_scripting/sample_data"
+output_report="$HOME/os-se-p20240034/final-exam/partC_scripting/collected_report.txt"
+
+dirs=("dir1" "dir2" "dir3")
+candidates=("fileA.txt" "fileB.txt" "fileC.txt" "locked.txt" "missing.txt")
+
+> "$output_report"
+
+for d in "${dirs[@]}"; do
+    for f in "${candidates[@]}"; do
+        target="$base_dir/$d/$f"
+
+        if [ ! -e "$target" ]; then
+            echo "SKIP (missing): $target" | tee -a "$output_report"
+            continue
+        fi
+
+        if [ ! -r "$target" ]; then
+            echo "SKIP (unreadable): $target" | tee -a "$output_report"
+            continue
+        fi
+
+        echo "--- $target ---" >> "$output_report"
+        cat "$target" >> "$output_report"
+        echo "" >> "$output_report"
+    done
+done
+
+echo "Report written to $output_report"

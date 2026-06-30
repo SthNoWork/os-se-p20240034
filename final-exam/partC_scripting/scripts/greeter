@@ -1,0 +1,16 @@
+#!/bin/bash
+
+current_user=$(whoami)
+logged_in_count=$(who | wc -l)
+uptime_info=$(uptime -p)
+
+messages=("Stay productive today!" "Don't forget to commit your work." "Reactor Core launch is close — stay sharp." "Keep your scripts clean.")
+
+random_index=$((RANDOM % ${#messages[@]}))
+
+echo "=================================="
+echo " Welcome, $current_user"
+echo " Logged-in users: $logged_in_count"
+echo " System uptime: $uptime_info"
+echo " Tip: ${messages[$random_index]}"
+echo "=================================="

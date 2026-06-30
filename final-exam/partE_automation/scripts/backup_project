@@ -1,0 +1,17 @@
+#!/bin/bash
+
+PROJECT_DIR="$HOME/os-se-p20240034/final-exam/partE_automation/sample_project"
+BACKUP_DIR="$HOME/os-se-p20240034/final-exam/partE_automation/backups"
+RETAIN=3
+
+timestamp=$(date '+%Y%m%d_%H%M%S')
+archive_name="sample_project_${timestamp}.tar.gz"
+
+mkdir -p "$BACKUP_DIR"
+tar -czf "$BACKUP_DIR/$archive_name" -C "$(dirname "$PROJECT_DIR")" "$(basename "$PROJECT_DIR")"
+
+echo "Created: $BACKUP_DIR/$archive_name"
+
+# prune, keep only newest $RETAIN archives
+cd "$BACKUP_DIR" || exit 1
+ls -1t sample_project_*.tar.gz | tail -n +$((RETAIN + 1)) | xargs -r rm -v

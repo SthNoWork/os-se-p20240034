@@ -1,0 +1,25 @@
+=== ls -l private_file.txt ===
+-rw------- 1 se-lor-hengrith se-lor-hengrith 16 Jun 30 13:54 perm_demo/private_file.txt
+
+=== ls -ld shared_dir ===
+drwx--x--x 2 se-lor-hengrith se-lor-hengrith 4096 Jun 30 13:54 perm_demo/shared_dir
+
+=== stat private_file.txt ===
+  File: perm_demo/private_file.txt
+  Size: 16        	Blocks: 8          IO Block: 4096   regular file
+Device: 252,0	Inode: 47349245    Links: 1
+Access: (0600/-rw-------)  Uid: ( 1130/se-lor-hengrith)   Gid: ( 1132/se-lor-hengrith)
+Access: 2026-06-30 13:54:23.879922437 +0700
+Modify: 2026-06-30 13:54:23.879922437 +0700
+Change: 2026-06-30 13:54:23.880922430 +0700
+ Birth: 2026-06-30 13:54:23.879922437 +0700
+
+=== stat shared_dir ===
+  File: perm_demo/shared_dir
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 252,0	Inode: 47349244    Links: 2
+Access: (0711/drwx--x--x)  Uid: ( 1130/se-lor-hengrith)   Gid: ( 1132/se-lor-hengrith)
+Access: 2026-06-30 13:54:23.878922443 +0700
+Modify: 2026-06-30 13:54:23.878922443 +0700
+Change: 2026-06-30 13:54:23.882922417 +0700
+ Birth: 2026-06-30 13:54:23.878922443 +0700

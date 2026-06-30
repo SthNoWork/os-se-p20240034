@@ -1,0 +1,16 @@
+D2 — Race condition observations (unpatched buy_reactor_core, 40 concurrent buyers, starting stock 200)
+
+Run 1: final stock = -1
+Run 2: final stock = -1
+Run 3: final stock = -1
+
+Expected correct value: 160 (200 - 40)
+
+Observed: severe race condition. Multiple concurrent processes read the same
+stale stock value before any of them write back (classic TOCTOU - 
+time-of-check-to-time-of-use). Some purchases succeed using already-stale
+data, decrementing from already-decremented values, eventually driving stock
+negative. Intermittent "[: : integer expression expected" errors occurred
+when one process read stock.txt while another process was mid-write,
+producing a partial/empty read. This confirms the read-modify-write
+critical section is unprotected.

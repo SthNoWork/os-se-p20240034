@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BUYER_PREFIX="buyer"
+NUM_BUYERS=40
+QTY=1
+
+for i in $(seq 1 "$NUM_BUYERS"); do
+    buy_reactor_core "${BUYER_PREFIX}${i}" "$QTY" &
+done
+
+wait
+echo "Swarm complete."

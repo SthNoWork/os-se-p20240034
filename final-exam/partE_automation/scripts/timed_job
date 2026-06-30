@@ -1,0 +1,10 @@
+#!/bin/bash
+
+output_file="$1"
+
+if [ -z "$output_file" ]; then
+    echo "Usage: timed_job <output_file>"
+    exit 1
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') | timed_job fired | PID=$$" >> "$output_file"
